@@ -1,0 +1,1 @@
+Playtest follow-up: 50 passing Node tests and 36 passing Chromium browser checks. Camera defaults to both forts; close framing is explicit. Material durability is reduced, rotation is available during placement, and playback is 1.2x travel / 1x destruction. Safari/hardware verification remains open. Earlier Alpha 2.1 pacing estimates do not apply to the slower playback.

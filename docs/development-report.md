@@ -1,5 +1,7 @@
 # Alpha 2.1 — Mobile-First Arcade Recovery
 
+**Playtest follow-up:** Both-fort framing is now the default, with close framing on request. Pieces can rotate during placement using R/right-click/wheel or the touch Rotate button while held. Timber/stone/steel durability is reduced to 55/85/200. Travel playback is slowed to 1.2× and impact/settling to 1×. Timing estimates and screen captures below describe the earlier published 2.1 build and are retained as historical evidence, not current pacing measurements.
+
 This pass changes how Reign of Doom is operated and presented. The same material physics, layered bunkers, three soldiers, ammunition, construction resources, six-shot bombardments, repairs and victory rules remain. No new weapons, materials, troops, maps or progression were added.
 
 ## Implemented experience

@@ -1,0 +1,62 @@
+
+> reign-of-doom@0.2.1 test
+> node --test --test-isolation=none tests/*.test.js
+
+✔ all scale/layout combinations have mirrored, wider territories and stable shelters (462.615339ms)
+✔ six alternating shots precede repairs and the next opener switches (68.948286ms)
+✔ three centered standard bolts produce damage without deleting a starting army (109.144367ms)
+✔ long range prediction matches both substeps of the actual projectile (19.87614ms)
+✔ maximum speed projectile does not tunnel through a thin plate (17.869763ms)
+✔ damage reduces grip before physical fracture and fragments can fracture again (21.491341ms)
+✔ soldiers can move onto ground and platforms, with no midair or enemy placement (21.772285ms)
+✔ repair allows exactly one valid soldier move, while cancellation consumes nothing (19.728042ms)
+✔ clearance removes only safe settled fragments and has a per-repair quota (19.29069ms)
+✔ cleanup preserves dangerous compression loads and intact fallen blocks (18.304061ms)
+✔ small old settled fragments clear without erasing structural wreckage (20.847106ms)
+✔ camera conversions round trip and anchored zoom preserves the pointed location (0.651586ms)
+✔ camera has separate construction, launch, flight and impact frames (29.237241ms)
+✔ heavy stacked rubble transmits crushing through a light intervening fragment (20.71359ms)
+✔ intervening structural cover attenuates a Burst blast (40.449904ms)
+✔ ranging adjusts unreachable steep/flat angles and respects special-ammunition speed (4.326294ms)
+✔ withdrawing a support wakes a connected tower above the old local wake radius (28.138203ms)
+✔ Grand Siege CPU falls back to a reachable bolt instead of stalling on heavy ammo (26.319212ms)
+✔ a second finger cancels aiming until every finger is released (0.396342ms)
+✔ pointer cancellation discards stock and body gestures without a commit action (0.144242ms)
+✔ a pan gesture never returns an aiming action and taps remain distinct from drags (0.109181ms)
+✔ pinch uses a stable centroid and protects a zero separation (0.150091ms)
+✔ human aiming never times out into an accidental shot; CPU still plays (109.97651ms)
+✔ tablet fort and impact frames contain the whole structure across short landscapes (20.062903ms)
+✔ the long-flight cap does not cut off an active collapse or crushing (19.748863ms)
+✔ automatic framing defaults to both forts during building and battle (19.693742ms)
+✔ two builders hand off to firing; pause freezes timers and physics (18.180219ms)
+✔ inventory is consumed only after valid placement (19.005651ms)
+✔ turn ownership, direction and special ammo stock are enforced (26.962416ms)
+✔ six missed shots lead to short repairs, supply and alternate opening side (162.004687ms)
+✔ victory resolves after physical consequences and can be rematched cleanly (50.169398ms)
+✔ CPU constructs legally with finite stock and fires without user help (57.854063ms)
+✔ same seeded CPU duel has repeatable outcome and terminates with bounded bodies (7341.655825ms)
+✔ low-power high-angle shots allowed by the controls still launch (19.829228ms)
+✔ a last soldier dying from compression cannot leave an empty side in aiming (18.721766ms)
+✔ starter shelters settle without harming any soldiers (59.777981ms)
+✔ snapping, bounds and overlap rules protect soldiers and limit construction (20.995176ms)
+✔ sleeping roof wakes and falls after support removal (21.732454ms)
+✔ heavy falling stone crushes pinned soldiers through real collisions (27.665078ms)
+✔ sustained compression kills a soldier pinned under a settled heavy load (25.381262ms)
+✔ high-energy fracture conserves mass and leaves physical pieces (29.872191ms)
+✔ a real Breaker impact fractures wood and masonry while steel remains physical (58.751509ms)
+✔ burst applies radial impulse and real damage, once (16.921712ms)
+✔ fragment budget bounds physical growth and spent ammo is cleaned (20.126175ms)
+✔ asymmetric wedges and rotated elbows fit their real bounds and match their preview (18.260746ms)
+✔ seeded supply is repeatable and repairs contain exactly six pieces (0.308354ms)
+✔ slingshot rejects taps and caps launch velocity without changing direction (0.207075ms)
+✔ win, mutual elimination and siege-limit draws are explicit (0.089803ms)
+✔ materials have distinct inertia, contact and rebound properties (0.085116ms)
+✔ contact model excludes tangential sliding and includes angular closing (0.145475ms)
+ℹ tests 50
+ℹ suites 0
+ℹ pass 50
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9227.5968

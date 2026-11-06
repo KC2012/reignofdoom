@@ -45,10 +45,10 @@ bindPress($('#help'),()=>$('#manual').showModal());bindPress($('#close-manual'),
 bindPress($('#sound'),()=>{audio.unlock();audio.enabled=!audio.enabled;$('#sound').textContent=`Sound ${audio.enabled?'on':'off'}`;$('#sound').setAttribute('aria-pressed',String(audio.enabled));});
 bindPress($('#ready'),()=>{if(match&&!match.isCPU()&&match.building){cancelAll();match.ready();updateUI();}});
 function setView(mode){cancelAll();viewMode=mode;camera=activityFrame();}
-bindPress($('#follow'),()=>setView('auto'));bindPress($('#enemy'),()=>setView('enemy'));bindPress($('#view'),()=>setView('overview'));
+bindPress($('#follow'),()=>setView(match?.building?'fort':'follow'));bindPress($('#enemy'),()=>setView('enemy'));bindPress($('#view'),()=>setView('overview'));
 function zoom(factor,anchor={x:width/2,y:height/2}){viewMode='manual';zoomCamera(camera,factor,anchor,{width,height});}
 bindPress($('#zoom-in'),()=>{cancelAll();zoom(.8);});bindPress($('#zoom-out'),()=>{cancelAll();zoom(1.25);});
-canvas.addEventListener('wheel',e=>{if(!match)return;e.preventDefault();cancelAll();const r=canvas.getBoundingClientRect();zoom(Math.exp(e.deltaY*.001),{x:e.clientX-r.left,y:e.clientY-r.top});},{passive:false});
+canvas.addEventListener('wheel',e=>{if(!match)return;e.preventDefault();if(drag&&(drag.type==='piece'||drag.type==='move')){rotate();return;}cancelAll();const r=canvas.getBoundingClientRect();zoom(Math.exp(e.deltaY*.001),{x:e.clientX-r.left,y:e.clientY-r.top});},{passive:false});
 bindPress($('#cancel'),()=>{cancelAll();selectedEntity=null;preview=null;updateContext();});
 function updateContext(){const has=!!selectedEntity||!!preview||!!held;$('#context-tools').hidden=!match?.building||match.isCPU()||!has;if($('#rotate'))$('#rotate').disabled=selectedEntity?.kind==='soldier'||held?.kind==='soldier';}
 function updateUI(){
@@ -58,7 +58,7 @@ function updateUI(){
  $('#phase').textContent=m.phase==='flight'?`${s.name} · Incoming!`:m.building?`${s.name}, ${m.phase==='build'?'build':'repair'}.`:`${s.name}, take your shot.`;
  const countStamp=m.counts().join(':');if(countStamp!==countsKey){countsKey=countStamp;for(let side=0;side<2;side++){$('#troops'+side).innerHTML=`<b>${sides()[side].name}</b>`+Array.from({length:3},(_,i)=>`<i class="soldier-dot ${i<m.counts()[side]?'alive':''}"></i>`).join('');$('#troops'+side).setAttribute('aria-label',`${sides()[side].name}: ${m.counts()[side]} soldiers`);}}
  $('#ready').hidden=!m.building;$('#ready').disabled=m.isCPU();$('#ready').textContent=m.phase==='repair'?'Repair done →':'Ready →';
- $('#instruction').textContent=lab?`LAB · ${m.world.entities.size} bodies · K load / L supports / N phase`:m.isCPU()?(m.building?'CPU is building…':'CPU is taking its shot…'):m.phase==='flight'?'Watch it fall.':m.building?(m.phase==='repair'?`${m.soldierMoves[m.active]} soldier move · ${m.clearance[m.active]} clearances`:'Drag pieces or soldiers · Two fingers move & zoom'):'Pull the ring back, then let go · Two fingers move & zoom';
+ $('#instruction').textContent=lab?`LAB · ${m.world.entities.size} bodies · K load / L supports / N phase`:m.isCPU()?(m.building?'CPU is building…':'CPU is taking its shot…'):m.phase==='flight'?'Watch it fall.':m.building?(m.phase==='repair'?`${m.soldierMoves[m.active]} soldier move · ${m.clearance[m.active]} clearances`:'My fort zooms in · Drag pieces · Rotate while holding'):'Pull the ring back, then let go · Two fingers move & zoom';
  $('#follow').textContent=m.phase==='aim'?'Ballista':m.phase==='flight'?'Follow shot':'My fort';
  if(m.phase==='over'){showResult();updateContext();return;}
  if(m.revision===lastRevision&&m.phase===lastPhase){updateContext();return;}lastRevision=m.revision;lastPhase=m.phase;
@@ -67,7 +67,7 @@ function updateUI(){
   if(!m.inventories[m.active][selected])selected=PIECES.find(p=>m.inventories[m.active][p.id]>0)?.id??'brick';
   $('#controls').innerHTML=`<div class="pieces" aria-label="Construction supply">${PIECES.filter(p=>m.inventories[m.active][p.id]>0||(m.phase==='build'&&p.count>0)).map(p=>`<button class="piece ${selected===p.id?'selected':''}" data-piece="${p.id}" aria-label="${p.name}, ${m.inventories[m.active][p.id]} remaining" ${disabled||!m.inventories[m.active][p.id]?'disabled':''}><span class="piece-icon" style="color:${MATERIALS[p.material].color}">${p.icon}</span><span>${pieceLabel(p)}</span><small>${m.inventories[m.active][p.id]}</small></button>`).join('')}</div>${m.phase==='repair'?`<button id="clear" class="${clearMode?'selected':''}" ${disabled?'disabled':''}>Clear <small>${m.clearance[m.active]}</small></button>`:''}<button id="rotate" ${disabled?'disabled':''}>Rotate ↻</button>`;
   for(const b of document.querySelectorAll('[data-piece]'))b.onpointerdown=e=>{
-   if(e.button!==0||m.paused)return;audio.unlock();cancelAll();selected=b.dataset.piece;selectedEntity=null;rotation=0;clearMode=false;
+   if(e.button!==0||m.paused)return;audio.unlock();cancelAll();if(selected!==b.dataset.piece)rotation=0;selected=b.dataset.piece;selectedEntity=null;clearMode=false;
    document.querySelectorAll('[data-piece]').forEach(x=>x.classList.toggle('selected',x===b));
    beginPointer(e,{type:'piece',fromTray:true,piece:selected});e.preventDefault();
   };
@@ -112,7 +112,7 @@ function beginPointer(e,action){
  if(result==='camera'){restoreHeld();drag=null;pinch=pinchState(gesture.points);viewMode='manual';}
  else {drag=gesture.action;if(action.fromTray)previewAt(point,drag);}
 }
-document.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&gesture.points.size&&e.target!==canvas&&!gesture.points.has(e.pointerId))cancelAll();},true);
+document.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&gesture.points.size&&e.target!==canvas&&!gesture.points.has(e.pointerId)){if(e.target.closest('#rotate')){e.preventDefault();e.stopImmediatePropagation();lastTouchActivation=performance.now();rotate();}else cancelAll();}},true);
 canvas.onpointerdown=e=>{
  if(!match||match.paused||match.phase==='over'||$('#manual').open)return;
  if(e.button!==0&&e.button!==1)return;
@@ -152,7 +152,7 @@ window.addEventListener('pointerup',e=>{
  updateContext();
 });
 window.addEventListener('pointercancel',cancelAll);window.addEventListener('lostpointercapture',e=>{if(gesture.points.has(e.pointerId))cancelAll();});
-canvas.oncontextmenu=e=>{e.preventDefault();rotate();};
+canvas.oncontextmenu=e=>{e.preventDefault();rotate();};window.addEventListener('contextmenu',e=>{if(!e.defaultPrevented&&match?.building&&drag&&(drag.type==='piece'||drag.type==='move')){e.preventDefault();rotate();}});
 window.addEventListener('keydown',e=>{
  if(['INPUT','SELECT'].includes(e.target.tagName)||$('#manual').open)return;
  if(e.code==='Escape'){cancelAll();selectedEntity=null;updateContext();}
@@ -286,7 +286,7 @@ let observedShot=null,firstImpactAt=0;
 function frame(now){const dt=Math.min(.05,(now-lastTime)/1000);lastTime=now;
  if(match&&!match.paused&&!$('#manual').open){
   const shot=match.world.shot;if(shot!==observedShot){observedShot=shot;firstImpactAt=0;}if(shot&&(shot.entity.hitAt||shot.entity.exploded)&&!firstImpactAt)firstImpactAt=now;
-  const speed=match.phase==='flight'?(firstImpactAt?(now-firstImpactAt<900?1:1.4):2.4):1;
+  const speed=match.phase==='flight'?(firstImpactAt?1:1.2):1;
   accumulator+=dt*1000*speed;let steps=0;
   while(accumulator>=STEP&&steps++<8){if(match.building&&held&&match.timer<=STEP/1000)cancelAll();if(match.phase==='flight'&&firstImpactAt&&now-firstImpactAt<950&&match.world.shotFinished())match.world.advance();else match.tick(STEP/1000);accumulator-=STEP;}
   events();updateUI();

@@ -10,7 +10,7 @@ function fortFrame(match,side,viewport){
 }
 export function phaseFrame(match,mode='auto',viewport={width:1440,height:700}){
  const w=match.world,s=w.sides[match.active],enemy=w.sides[1-match.active],aspect=viewport.width/Math.max(1,viewport.height);
- if(mode==='overview')return fitFrame({minX:200,maxX:w.layout.width-200,minY:260,maxY:880},viewport,60);
+ if(mode==='overview'||mode==='auto')return fitFrame({minX:200,maxX:w.layout.width-200,minY:260,maxY:880},viewport,60);
  if(mode==='enemy')return fortFrame(match,1-match.active,viewport);
  if(mode==='fort'||match.building)return fortFrame(match,match.active,viewport);
  if(match.phase==='flight'&&w.shot){

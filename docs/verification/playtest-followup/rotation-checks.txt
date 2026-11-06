@@ -1,0 +1,4 @@
+PASS: touch Rotate button changes orientation while the first finger holds a piece, before release.
+PASS: PC R rotates a held piece before release.
+PASS: PC mouse wheel rotates a held piece before release.
+PASS: PC right-click rotates a held piece before release.

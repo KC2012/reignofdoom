@@ -5,9 +5,9 @@ export const SIDES = [
   { name: 'Tide', color: '#84e1db', center: 1930, zone: [1720, 2130], launcher: [1665, 765], direction: -1 },
 ];
 export const MATERIALS = {
-  wood: { name: 'Timber', density: .0017, friction: .7, restitution: .05, health: 80, resistance: 1.4, color: '#c9b38b', hatch: 'grain' },
-  stone: { name: 'Stone', density: .0038, friction: .85, restitution: .015, health: 120, resistance: 1.3, color: '#b9c4cf', hatch: 'stone' },
-  metal: { name: 'Steel', density: .006, friction: .45, restitution: .025, health: 260, resistance: 2.1, color: '#e4eee9', hatch: 'metal' },
+  wood: { name: 'Timber', density: .0017, friction: .7, restitution: .05, health: 55, resistance: 1.4, color: '#c9b38b', hatch: 'grain' },
+  stone: { name: 'Stone', density: .0038, friction: .85, restitution: .015, health: 85, resistance: 1.3, color: '#b9c4cf', hatch: 'stone' },
+  metal: { name: 'Steel', density: .006, friction: .45, restitution: .025, health: 200, resistance: 2.1, color: '#e4eee9', hatch: 'metal' },
   foam: { name: 'Cork', density: .00045, friction: .9, restitution: .38, health: 15, resistance: .6, color: '#b8ce95', hatch: 'dots' },
 };
 export const PIECES = [

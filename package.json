@@ -1,6 +1,6 @@
 {
   "name": "reign-of-doom",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test --test-isolation=none tests/*.test.js",
-    "test:browser": "node scripts/browser-test.mjs"
+    "test:browser": "node scripts/browser-test.mjs",
+    "test:webkit": "node scripts/webkit-test.mjs",
+    "audit:arcade": "node scripts/audit-arcade.mjs"
   },
   "dependencies": {
     "matter-js": "0.20.0"

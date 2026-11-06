@@ -1,0 +1,52 @@
+# Alpha 2 — The Great Siege Update
+
+Reign of Doom now supports six-shot bombardments, stronger physical bunkers, larger construction territories, soldier relocation, longer repairs, limited salvage clearance and long-range artillery. The existing visual identity and local/CPU match flow are retained. No external services or new runtime dependencies were introduced.
+
+## Implemented systems and independent decisions
+
+- **Six alternating shots per bombardment.** Three per side, with the opener alternating each phase. Repair follows the full exchange unless physical elimination ends the match earlier. Siege uses 70-second initial construction, 30-second repairs and an eight-bombardment limit. Skirmish and Grand adjust space, stock and timers; Grand retains a ten-phase limit.
+- **Physical resilience through architecture.** Three widely spaced bunkers each have separate thin stone caps, timber spans, inner masonry posts and outer timber buttresses. The short spans and independent compartments resist a shared-roof wipeout. Nothing is welded, granted invulnerability or protected by a global health bar. Soldiers can leave the starter bays.
+- **Progressive destruction.** Material health scales with the actual cross section of a piece. Visible cracking precedes fracture; badly damaged bodies lose grip. Blocks split into mass-preserving pieces with inherited motion, and fragments can fracture recursively up to three generations. A 160-fragment production budget limits growth; at saturation, failed pieces remain cracked physical bodies. Compound elbows currently fracture into rectangular approximations.
+- **Reliable connected collapse and crushing.** Removing or lifting a support wakes the entire connected dynamic island, including tall towers beyond the old local wake radius. Compression traverses actual vertical contacts and shares upper weight among lower supports. A light intervening fragment no longer hides a heavy pile's load from a soldier. This is a contact-based weight approximation, not a full structural stress solver. Moving a soldier clears obsolete compression state, not health damage.
+- **Long-range artillery with assistance.** Siege's launchers are 3,920 world units apart; the initial enemy-fort range is about 2.8 times Alpha 1's. Fixed, elevated firing pads keep ballistae usable. Maximum speed, projectile mass, material resistance and impact damage were retuned. Two physics substeps per 60 Hz game tick prevent fast bolts tunneling through thin pieces. Prediction uses the same drag/gravity integration. Range target adjusts otherwise unreachable angles and respects each ammunition type's speed; the Grand CPU falls back to Bolt when a special cannot reach.
+- **Three distinct ammunition purposes.** Bolt concentrates fracture damage. Breaker trades speed for mass and momentum through rubble/supports. Burst has a smaller impulse/radius and cover attenuates damage, so a blast does not erase a whole protected army. No new ammunition types were added.
+- **Larger territories and soldier placement.** Siege offers a 900 × 560 build envelope, with 24 supplied pieces. Skirmish offers 620 × 440 and Grand 1,300 × 720. Dragging soldiers requires a clear physical floor; initial moves are unlimited and each repair permits one valid move. Unsupported or enemy placement fails without consuming that move. Gravity, falling damage and crushing remain active.
+- **Repairs and rubble.** Six supplied pieces, including a geometric elbow, encourage selective rebuilding. Three safe fragment removals are allowed per repair. Intact fallen blocks persist. Active or supporting loads cannot be cleared. Small fragments can become dust after three seconds only when sleeping and not supporting another body; substantial or dangerous wreckage remains. Existing blocks can be salvaged by dragging.
+- **Camera and input.** Construction cuts to the active territory for immediate reliable placement; manual pan/zoom remains available within the phase. Wheel, buttons, Shift/middle drag, touch Pan and pinch are supported. A live enemy inset and inspection button help aim without compressing the whole battlefield into one image. Flight follows the projectile and impact focuses on destruction. Phase changes restore activity framing; Auto camera returns from a manual view.
+- **Five mirrored fields and three scales.** Lowlands, Divide, Terraces, Chasm and High Ground use actual static geometry. Fields are authored; seeds vary resources and CPU decisions rather than generating terrain. Grand Siege is experimental. Ballista repositioning was deferred because fixed raised pads keep the new aiming/camera workflow readable and avoid launcher-loss softlocks.
+- **CPU and presentation.** CPU construction uses legal flank layers, towers and a supported bridge, with seeded spacing. Repairs inspect uncovered troops before reinforcing flanks. Aiming prioritizes exposed troops or weakened overhead cover and avoids already exhausted cracked bodies; difficulty changes error, not physical stats. Cracks, fracture feedback, live debris, tension/release/recoil, phase/countdown cues, soldier-loss feedback and clear result/rematch controls preserve the restrained technical-toy style.
+
+## Verification and measured balance
+
+The release passes **42 Node rule/physics/match tests**, **18 production Chromium checks**, **45 complete Siege audits** and **6 complete Skirmish/Grand audits**. There are no skipped/expected-failure cases in the Node suite. Chromium reported zero page errors and zero external runtime requests. Tests use actual simulation paths; browser victory, repair-fragment and load fixtures are identified in source.
+
+Tests include all 15 map/scale shelter combinations, three accurate initial standard bolts, real Breaker/material impacts, contact-transmitted buried loads, connected tall-tower waking, safe clearance, recursive fracture, soldier floors/repair limits, unobstructed prediction accuracy, high-speed thin-wall collisions, six-shot transitions, camera conversions, angle/ammo reachability, and the Grand special-ammo fallback. Browser checks use real dragging, firing controls, touch pinch, touch handoff and touch launch at 390 px width.
+
+Siege audits use five fields × three difficulties × three seeds, with the same legal stock and repair placement as the game. They are machine duels, not human match-duration measurements.
+
+| CPU difficulty | Matches | Average fired shots | Average bombardments reached | Draws |
+| --- | ---: | ---: | ---: | ---: |
+| Easy | 15 | 45.33 | 7.60 | 2 |
+| Normal | 15 | 48.00 | 8.00 | 3 |
+| Hard | 15 | 48.00 | 8.00 | 4 |
+
+- Overall: **47.11 shots**, **7.87 bombardments reached** per completed Siege match.
+- Victory before the first repair: **0/45**. First-shot army wipeout: **0/45**. The latter measures elimination of all three soldiers from the initial standard shot and its consequences, not the destruction of every decorative block.
+- Recorded soldier deaths: direct projectile **28 (23.1%)**; falling structures **5**; sustained supported loads **79**; blast **9**. Ground/out-of-bounds categories, if any, remain separate in the JSON. These are lethal-source categories, not counts of all nonlethal impacts.
+- Peak dynamic bodies in Siege: **200**. Largest p95 simulation step across those runs: **1.110 ms**. Host wall-clock timings include scheduling/GC and are not a guarantee for another device.
+- Six additional normal-difficulty duels across Skirmish/Grand completed with **236** peak dynamic bodies. All map/scale starting shelters also passed the stability suite. Easy/hard audits were performed in Siege, not every difficulty/scale permutation.
+- The separate heavy-debris fixture drops 144 structural bodies (including physical fragments) around live Grand shelters for 900 game steps. It reached **186** bodies, **54** final fragments and **0** safe cleanups. Physics timing: p50 **0.120 ms**, p95 **0.611 ms**, p99 **0.990 ms**, maximum **2.375 ms**. This measures simulation, not GPU/frame latency. Crushing itself has dedicated regression fixtures.
+
+## Remaining issues and recommended human playtests
+
+**The three-to-five-bombardment ideal is not yet demonstrated.** Early wipeouts disappeared in these audits, but machine duels often reach the eight-phase limit, with winners decided by survivors and some draws. This is a material balance limitation, not a claim that the target was met. The next tuning pass should improve CPU route selection through rubble and compare four-to-six repair-piece supplies, using human matches before another broad damage increase. More distinct CPU fortress templates are also worthwhile.
+
+Observe two new players building without explanation, choosing soldier positions, using Range target then adjusting a shot, repairing an exposed bay and clearing one obstructing fragment. Record phases, time spent aiming, whether repairs feel urgent, and whether an eight-phase finish drags. Compare flat and High Ground layouts, and repeat on touch in landscape. Automated success cannot establish fun, satisfying weapon feel or an enjoyable timer.
+
+Other limits: conservative bounding-box contact-island waking can wake extra nearby bodies; load sharing is approximate; saturated fracture budgets retain cracked bodies; Blast cover uses geometric ray intersection rather than a detailed pressure simulation; narrow portrait overview makes distant soldiers small; CPU uses visible physical state but not search over simulated shots. No networking, saved matches, soldier classes, new ammunition, arbitrary procedural terrain or movable ballista was added. These do not block the runnable local game.
+
+## Delivery and next improvements
+
+Use the complete Alpha 2 ZIP for source, tests, evidence and the ready-built game, or the smaller browser ZIP for play. Both run with `node scripts/serve.mjs` and no npm install for built output. Development commands are in the README. Historical Alpha 1 evidence is retained under the original verification paths and its report is in `alpha1-report.md`.
+
+Priorities after human testing: reduce routine siege-limit finishes without returning to early wipeouts; improve breach/shot-angle selection and diversify CPU templates; make remaining repair moves clearer on small screens; profile an actual low-power touch device; refine compound fracture geometry and fragment-budget saturation. This report describes the prepared Alpha 2 artifacts before publication; publishing is a separate owner-authorized step.

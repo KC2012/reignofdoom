@@ -1,0 +1,14 @@
+{
+  "status": "not_verified",
+  "actual_iPad_hardware_available": false,
+  "webkit_installed": false,
+  "attempted_command": "npx playwright install webkit",
+  "pinned_playwright": "1.57.0",
+  "pinned_webkit_build": 2227,
+  "failure": "Configured network policy returned HTTP 403 Domain forbidden for official WebKit artifact downloads. TLS verification was kept enabled.",
+  "required_hosts": [
+    "cdn.playwright.dev",
+    "playwright.download.prss.microsoft.com"
+  ],
+  "limitations": "Chromium touch emulation is not iPad Safari or actual hardware verification."
+}

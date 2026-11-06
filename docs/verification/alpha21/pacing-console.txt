@@ -1,0 +1,69 @@
+
+> reign-of-doom@0.2.1 audit:arcade
+> node scripts/audit-arcade.mjs
+
+[
+  {
+    scale: 'skirmish',
+    seed: 17,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 288
+  },
+  {
+    scale: 'skirmish',
+    seed: 71,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 284
+  },
+  {
+    scale: 'skirmish',
+    seed: 1042,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 295
+  },
+  {
+    scale: 'siege',
+    seed: 17,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 294
+  },
+  {
+    scale: 'siege',
+    seed: 71,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 298
+  },
+  {
+    scale: 'siege',
+    seed: 1042,
+    shots: 48,
+    phases: 8,
+    estimatedSeconds: 298
+  },
+  {
+    scale: 'grand',
+    seed: 17,
+    shots: 34,
+    phases: 6,
+    estimatedSeconds: 240
+  },
+  {
+    scale: 'grand',
+    seed: 71,
+    shots: 60,
+    phases: 10,
+    estimatedSeconds: 378
+  },
+  {
+    scale: 'grand',
+    seed: 1042,
+    shots: 60,
+    phases: 10,
+    estimatedSeconds: 372
+  }
+]

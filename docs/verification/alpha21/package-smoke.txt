@@ -1,0 +1,2 @@
+PASS reign-of-doom-alpha21: extracted package serves Alpha 2.1 HTML, JavaScript and notices without npm dependencies (HOST=127.0.0.1).
+PASS reign-of-doom-alpha21-complete: extracted package serves Alpha 2.1 HTML, JavaScript and notices without npm dependencies (HOST=0.0.0.0).

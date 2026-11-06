@@ -1,4 +1,5 @@
 import {createServer} from 'node:http';
+import {networkInterfaces} from 'node:os';
 import {readFile,stat} from 'node:fs/promises';
 import {resolve,extname,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -14,4 +15,8 @@ const server=createServer(async(req,res)=>{
   const data=await readFile(path);res.writeHead(200,{'Content-Type':types[extname(path)]||'application/octet-stream','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:data);
  }catch{res.writeHead(404);res.end('Not found');}
 });
-server.listen(port,'127.0.0.1',()=>console.log(`Reign of Doom is running on port ${port}. Open http://127.0.0.1:${port} in your browser. Press Ctrl+C to stop.`));
+const host=process.env.HOST||'127.0.0.1';
+server.listen(port,host,()=>{
+ console.log(`Reign of Doom: http://127.0.0.1:${port} — Ctrl+C stops the server.`);
+ if(host==='0.0.0.0')for(const entries of Object.values(networkInterfaces()))for(const entry of entries??[])if(entry.family==='IPv4'&&!entry.internal)console.log(`Tablet on the same Wi-Fi: http://${entry.address}:${port}`);
+});

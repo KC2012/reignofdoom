@@ -4,8 +4,20 @@ import zipfile, hashlib
 root=Path(__file__).resolve().parent.parent
 out=root/'downloads';out.mkdir(exist_ok=True)
 if not (root/'dist/index.html').is_file():raise SystemExit('Run npm run build first.')
-name='reign-of-doom-alpha2'
-readme='REIGN OF DOOM / ALPHA 2 — THE GREAT SIEGE UPDATE\n\nRun: node scripts/serve.mjs\nOpen the local address printed by the server. Node 24 recommended.\nNo npm install or network access is required to play the built game.\nDo not open index.html by double-clicking; serve it over HTTP.\nSee the in-game Field manual for controls.\n'
+name='reign-of-doom-alpha21'
+readme="""REIGN OF DOOM / ALPHA 2.1 — MOBILE-FIRST ARCADE RECOVERY
+
+Run: node scripts/serve.mjs
+Open the local address printed by the server. Node 24 recommended.
+No npm install or network access is required to play the built game after loading.
+Do not open index.html by double-clicking; serve it over HTTP.
+For iPad on the same Wi-Fi, set HOST=0.0.0.0 before starting the server.
+Use the tablet address printed in the terminal.
+Two players starts immediately. Drag pieces; pull the ballista ring.
+
+Safari/iPad hardware compatibility has not been verified in this environment.
+See the complete package report for the tested configurations and limitations.
+"""
 with zipfile.ZipFile(out/f'{name}-browser.zip','w',zipfile.ZIP_DEFLATED) as z:
  for p in sorted((root/'dist').rglob('*')):
   if p.is_file():z.write(p,f'{name}/'+str(p.relative_to(root)))

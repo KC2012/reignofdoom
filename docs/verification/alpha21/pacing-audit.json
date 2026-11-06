@@ -1,0 +1,149 @@
+{
+  "description": "Natural fixed-step machine matches. Presentation time estimated from 2.4x travel, 1x initial impact, 1.4x later impact, and minimum .95s impact hold. Initial build/repair times are stated assumptions, not human measurement.",
+  "results": [
+    {
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        2,
+        2
+      ],
+      "peakBodies": 174,
+      "estimatedCombatPlaybackSeconds": 136.27976190475133,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 288.27976190475135
+    },
+    {
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": 1,
+      "survivors": [
+        1,
+        2
+      ],
+      "peakBodies": 168,
+      "estimatedCombatPlaybackSeconds": 132.30992063490652,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 284.3099206349065
+    },
+    {
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        2,
+        2
+      ],
+      "peakBodies": 181,
+      "estimatedCombatPlaybackSeconds": 142.65357142856786,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 294.65357142856783
+    },
+    {
+      "scale": "siege",
+      "seed": 17,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        1,
+        1
+      ],
+      "peakBodies": 190,
+      "estimatedCombatPlaybackSeconds": 141.71686507935803,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 293.71686507935806
+    },
+    {
+      "scale": "siege",
+      "seed": 71,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        1,
+        1
+      ],
+      "peakBodies": 181,
+      "estimatedCombatPlaybackSeconds": 145.51607142857077,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 297.51607142857074
+    },
+    {
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        1,
+        1
+      ],
+      "peakBodies": 185,
+      "estimatedCombatPlaybackSeconds": 145.62976190475183,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 297.62976190475183
+    },
+    {
+      "scale": "grand",
+      "seed": 17,
+      "shots": 34,
+      "bombardments": 6,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 158,
+      "estimatedCombatPlaybackSeconds": 119.73630952379291,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 239.7363095237929
+    },
+    {
+      "scale": "grand",
+      "seed": 71,
+      "shots": 60,
+      "bombardments": 10,
+      "winner": 1,
+      "survivors": [
+        1,
+        2
+      ],
+      "peakBodies": 229,
+      "estimatedCombatPlaybackSeconds": 194.17341269846054,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 378.17341269846054
+    },
+    {
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 60,
+      "bombardments": 10,
+      "winner": 1,
+      "survivors": [
+        1,
+        2
+      ],
+      "peakBodies": 236,
+      "estimatedCombatPlaybackSeconds": 188.43650793653478,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 372.4365079365348
+    }
+  ]
+}

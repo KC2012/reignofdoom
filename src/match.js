@@ -130,7 +130,7 @@ export class Match {
     if(this.phase==='flight') {if(this.world.shotFinished())this.resolve();return;}
     const outcome=this.world.armed?resultFor(this.counts(),this.round,this.world.layout.scale.limit):null;
     if(outcome){this.result=outcome;this.phase='over';this.revision++;return;}
-    this.timer=Math.max(0,this.timer-dt);this.cpuClock+=dt;
+    if(this.phase!=='aim'||this.isCPU())this.timer=Math.max(0,this.timer-dt);this.cpuClock+=dt;
     if(this.isCPU()) {
       if(this.building&&this.cpuClock>.32) {
         this.cpuClock=0;

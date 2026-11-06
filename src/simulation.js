@@ -172,7 +172,7 @@ export class SiegeWorld {
     }
   }
   step(n=1) { for(let i=0;i<n;i++)this.advance(); }
-  shotFinished() {return !!this.shot&&(this.shot.quiet>650||this.shot.age>14000);}
+  shotFinished() {return !!this.shot&&(this.shot.quiet>650||(this.shot.age>14000&&![...this.entities.values()].some(e=>e.kind!=='projectile'&&(e.body.speed>1.8||Math.abs(e.body.angularVelocity)>.025||e.fractureAt||(e.kind==='soldier'&&e.crush>0)))));}
   finishShot() {
     // Keep all structural debris. Only spent ammunition is removed between turns.
     for(const e of [...this.entities.values()])if(e.kind==='projectile')this.remove(e);

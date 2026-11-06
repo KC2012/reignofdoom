@@ -1,0 +1,14 @@
+export class Audio {
+  constructor(){this.enabled=true;this.ctx=null;this.last=0;}
+  unlock(){if(!this.ctx)try{this.ctx=new AudioContext();}catch{}this.ctx?.resume();}
+  play(type,amount=1){
+    if(!this.enabled||!this.ctx||this.ctx.state!=='running')return;
+    const c=this.ctx,t=c.currentTime;
+    if(type==='impact'&&t-this.last<.065)return;if(type==='impact')this.last=t;
+    const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+    const config={place:[330,130,.08,'triangle'],launch:[180,48,.22,'sawtooth'],impact:[120,36,.12,'triangle'],break:[95,24,.2,'sawtooth'],blast:[65,20,.45,'sawtooth'],defeat:[440,130,.25,'square'],victory:[330,660,.55,'triangle']}[type];
+    if(!config)return;
+    o.type=config[3];o.frequency.setValueAtTime(config[0],t);o.frequency.exponentialRampToValueAtTime(config[1],t+config[2]);
+    g.gain.setValueAtTime(Math.min(.075,.025+amount*.003),t);g.gain.exponentialRampToValueAtTime(.001,t+config[2]);o.start(t);o.stop(t+config[2]);
+  }
+}

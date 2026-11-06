@@ -1,0 +1,21 @@
+{
+  "passed": 14,
+  "checks": [
+    "title renders and browser game loads",
+    "drag a supplied block into the fort and consume one piece",
+    "move and rotate an existing block without consuming stock",
+    "overlapping soldiers cannot consume a construction piece",
+    "pause freezes active construction",
+    "hot-seat handoff and real slingshot drag fire a physical projectile",
+    "impact settles and damage resolves into a next turn or victory",
+    "two firing turns enter a five-piece repair round",
+    "victory is displayed and rematch resets soldiers, ammo and world",
+    "CPU constructs its own fort and takes a turn",
+    "field manual and pause lifecycle work",
+    "proving-ground load and support withdrawal fixtures run in the browser",
+    "390px touch layout supports piece dragging and slingshot firing without overflow",
+    "no JavaScript errors or external runtime requests"
+  ],
+  "errors": [],
+  "externalRequests": []
+}

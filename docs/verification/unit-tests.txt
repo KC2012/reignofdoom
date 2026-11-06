@@ -1,0 +1,35 @@
+> reign-of-doom@0.1.0 test
+> node --test --test-isolation=none tests/*.test.js
+
+✔ two builders hand off to firing; pause freezes timers and physics (36.621441ms)
+✔ inventory is consumed only after valid placement (10.448098ms)
+✔ turn ownership, direction and special ammo stock are enforced (28.187353ms)
+✔ two missed shots lead to short repairs, supply and alternate opening side (20.547434ms)
+✔ victory resolves after physical consequences and can be rematched cleanly (17.033068ms)
+✔ CPU constructs legally with finite stock and fires without user help (21.847261ms)
+✔ same seeded CPU duel has repeatable outcome and terminates with bounded bodies (108.144837ms)
+✔ low-power high-angle shots allowed by the controls still launch (4.706204ms)
+✔ a last soldier dying from compression cannot leave an empty side in aiming (8.355839ms)
+✔ starter shelters settle without harming any soldiers (24.753325ms)
+✔ snapping, bounds and overlap rules protect soldiers and limit construction (4.116589ms)
+✔ sleeping roof wakes and falls after support removal (5.970639ms)
+✔ heavy falling stone crushes pinned soldiers through real collisions (6.586242ms)
+✔ sustained compression kills a soldier pinned under a settled heavy load (5.124247ms)
+✔ high-energy fracture conserves mass and leaves physical pieces (5.41164ms)
+✔ steel survives a hit that fractures timber and brittle masonry (14.009172ms)
+✔ burst applies radial impulse and real damage, once (5.894498ms)
+✔ fragment budget bounds physical growth and spent ammo is cleaned (9.275242ms)
+✔ asymmetric wedges and rotated elbows fit their real bounds and match their preview (6.815769ms)
+✔ seeded supply is repeatable and repairs contain exactly five pieces (0.22554ms)
+✔ slingshot rejects taps and caps launch velocity without changing direction (0.269996ms)
+✔ win, mutual elimination and siege-limit draws are explicit (0.162048ms)
+✔ materials have distinct inertia, contact and rebound properties (0.094809ms)
+✔ contact model excludes tangential sliding and includes angular closing (0.166074ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 382.044763

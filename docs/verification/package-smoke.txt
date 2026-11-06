@@ -1,0 +1,2 @@
+PASS: extracted browser ZIP serves its HTML, bundled JavaScript and third-party notices without npm dependencies.
+PASS: documented development startup serves the game HTML and main module.

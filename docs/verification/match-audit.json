@@ -1,0 +1,185 @@
+{
+  "matches": 12,
+  "results": [
+    {
+      "terrain": "valley",
+      "seed": 17,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        3,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "valley",
+      "seed": 71,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        1
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "valley",
+      "seed": 1042,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        2
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 51
+    },
+    {
+      "terrain": "valley",
+      "seed": 2026,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        1,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 48
+    },
+    {
+      "terrain": "ridge",
+      "seed": 17,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        3,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "ridge",
+      "seed": 71,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        1
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "ridge",
+      "seed": 1042,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        2
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 51
+    },
+    {
+      "terrain": "ridge",
+      "seed": 2026,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        1,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 48
+    },
+    {
+      "terrain": "steps",
+      "seed": 17,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        3,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "steps",
+      "seed": 71,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        1
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 52
+    },
+    {
+      "terrain": "steps",
+      "seed": 1042,
+      "shots": 3,
+      "rounds": 2,
+      "survivors": [
+        0,
+        2
+      ],
+      "result": {
+        "winner": 1,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 51
+    },
+    {
+      "terrain": "steps",
+      "seed": 2026,
+      "shots": 4,
+      "rounds": 2,
+      "survivors": [
+        1,
+        0
+      ],
+      "result": {
+        "winner": 0,
+        "reason": "Last soldiers standing"
+      },
+      "peakBodies": 48
+    }
+  ]
+}

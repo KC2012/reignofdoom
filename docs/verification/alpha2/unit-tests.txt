@@ -1,0 +1,54 @@
+
+> reign-of-doom@0.2.0 test
+> node --test --test-isolation=none tests/*.test.js
+
+✔ all scale/layout combinations have mirrored, wider territories and stable shelters (485.747623ms)
+✔ six alternating shots precede repairs and the next opener switches (52.078353ms)
+✔ three centered standard bolts produce damage without deleting a starting army (99.427473ms)
+✔ long range prediction matches both substeps of the actual projectile (18.403325ms)
+✔ maximum speed projectile does not tunnel through a thin plate (18.396203ms)
+✔ damage reduces grip before physical fracture and fragments can fracture again (22.62534ms)
+✔ soldiers can move onto ground and platforms, with no midair or enemy placement (20.56704ms)
+✔ repair allows exactly one valid soldier move, while cancellation consumes nothing (16.87227ms)
+✔ clearance removes only safe settled fragments and has a per-repair quota (17.947344ms)
+✔ cleanup preserves dangerous compression loads and intact fallen blocks (16.91996ms)
+✔ small old settled fragments clear without erasing structural wreckage (16.946029ms)
+✔ camera conversions round trip and anchored zoom preserves the pointed location (0.412748ms)
+✔ camera has separate construction, launch, flight and impact frames (19.692292ms)
+✔ heavy stacked rubble transmits crushing through a light intervening fragment (20.409037ms)
+✔ intervening structural cover attenuates a Burst blast (36.969288ms)
+✔ ranging adjusts unreachable steep/flat angles and respects special-ammunition speed (5.360302ms)
+✔ withdrawing a support wakes a connected tower above the old local wake radius (34.846794ms)
+✔ Grand Siege CPU falls back to a reachable bolt instead of stalling on heavy ammo (28.089946ms)
+✔ two builders hand off to firing; pause freezes timers and physics (18.69233ms)
+✔ inventory is consumed only after valid placement (18.480848ms)
+✔ turn ownership, direction and special ammo stock are enforced (27.034392ms)
+✔ six missed shots lead to short repairs, supply and alternate opening side (176.852262ms)
+✔ victory resolves after physical consequences and can be rematched cleanly (43.597197ms)
+✔ CPU constructs legally with finite stock and fires without user help (56.158139ms)
+✔ same seeded CPU duel has repeatable outcome and terminates with bounded bodies (2178.667552ms)
+✔ low-power high-angle shots allowed by the controls still launch (19.747084ms)
+✔ a last soldier dying from compression cannot leave an empty side in aiming (19.116371ms)
+✔ starter shelters settle without harming any soldiers (55.344106ms)
+✔ snapping, bounds and overlap rules protect soldiers and limit construction (20.490834ms)
+✔ sleeping roof wakes and falls after support removal (21.383265ms)
+✔ heavy falling stone crushes pinned soldiers through real collisions (24.717228ms)
+✔ sustained compression kills a soldier pinned under a settled heavy load (21.354382ms)
+✔ high-energy fracture conserves mass and leaves physical pieces (21.159304ms)
+✔ material resistance produces progressive damage and stronger steel (55.644171ms)
+✔ burst applies radial impulse and real damage, once (18.47409ms)
+✔ fragment budget bounds physical growth and spent ammo is cleaned (22.343767ms)
+✔ asymmetric wedges and rotated elbows fit their real bounds and match their preview (19.56204ms)
+✔ seeded supply is repeatable and repairs contain exactly six pieces (0.391379ms)
+✔ slingshot rejects taps and caps launch velocity without changing direction (0.299544ms)
+✔ win, mutual elimination and siege-limit draws are explicit (0.098486ms)
+✔ materials have distinct inertia, contact and rebound properties (0.084875ms)
+✔ contact model excludes tangential sliding and includes angular closing (0.115752ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 42
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3826.645533

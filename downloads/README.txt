@@ -1,14 +1,15 @@
-REIGN OF DOOM / ALPHA 1
+REIGN OF DOOM — ALPHA 2 / THE GREAT SIEGE UPDATE
 
-Unzip reign-of-doom-alpha1-browser.zip, then open a terminal in its folder:
+Current packages:
+  reign-of-doom-alpha2-browser.zip — ready-built browser game and local server
+  reign-of-doom-alpha2-complete.zip — built game, source, tests and reports
+
+Unzip, open a terminal in the extracted folder, and run:
   node scripts/serve.mjs
-Open the local address printed by the server in your browser.
-Node.js 24 is recommended. No npm install or network access is required.
+Open the local browser address printed by the server. Node 24 recommended.
+No npm installation or Internet connection is required to play the built game.
 
-Alternatively, serve dist/ with any static HTTP server. Opening index.html
-by double-clicking is not supported because browsers require HTTP for modules.
+For source development, follow README.md. The in-game Field manual explains
+construction, soldier placement, camera, artillery, repairs and clearance.
 
-Build around three soldiers, fire at the enemy, and patch the wreckage.
-The in-game Field manual explains all controls. Desktop landscape is best.
-
-The source, automated tests and development report are in the parent project.
+Alpha 1 packages remain here as historical releases. Alpha 2 packages contain the validated delivery artifacts.

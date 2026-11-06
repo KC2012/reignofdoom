@@ -1,22 +1,29 @@
 import Matter from 'matter-js';
 import { WORLD, SIDES, MATERIALS, PIECES, AMMO, STEP, clamp } from './rules.js';
+import { battlefield } from './battlefields.js';
 import { contactImpact } from './impact.js';
 const { Engine, Bodies, Body, Composite, Events, Query, Sleeping, Vector } = Matter;
 export class SiegeWorld {
-  constructor(seed = 1, terrain = 'valley') {
+  constructor(seed = 1, terrain = 'valley', scale='siege') {
+    this.layout=battlefield(scale,terrain);this.sides=this.layout.sides;this.deaths=[];this.cleanupCount=0;
     this.engine=Engine.create({enableSleeping:true,positionIterations:10,velocityIterations:8});
     this.engine.gravity.y=.8; this.entities=new Map(); this.events=[]; this.time=0; this.armed=false;
     this.pending=new Map(); this.blasts=new Set(); this.shot=null; this.seed=seed; this.terrain=terrain;
     this.terrainBodies=[]; this.history=[]; this.fragmentCount=0;
-    this.addTerrain(Bodies.rectangle(1200,910,2700,200,{isStatic:true,friction:.9}));
-    if (terrain==='ridge') this.addTerrain(Bodies.trapezoid(1200,780,280,160,.5,{isStatic:true,friction:.9}));
-    if (terrain==='steps') {
-      this.addTerrain(Bodies.rectangle(1125,787,120,46,{isStatic:true}));
-      this.addTerrain(Bodies.rectangle(1275,770,120,80,{isStatic:true}));
-    }
+    const width=this.layout.width,g=WORLD.ground;
+    if(terrain==='ravine'){
+      this.addTerrain(Bodies.rectangle(width/4-100,g+200,width/2-200,400,{isStatic:true,friction:.9}));
+      this.addTerrain(Bodies.rectangle(width*3/4+100,g+200,width/2-200,400,{isStatic:true,friction:.9}));
+    }else this.addTerrain(Bodies.rectangle(width/2,g+200,width+600,400,{isStatic:true,friction:.9}));
+    if(terrain==='ridge')this.addTerrain(Bodies.trapezoid(width/2,g-85,520,170,.5,{isStatic:true,friction:.9}));
+    this.sides.forEach(s=>{
+      this.addTerrain(Bodies.rectangle(s.launcher[0],g-50,130,100,{isStatic:true,friction:.9}));
+      if(terrain==='highlands')this.addTerrain(Bodies.rectangle(s.center,g-50,560,100,{isStatic:true,friction:.9}));
+      if(terrain==='steps')for(const sign of [-1,1])this.addTerrain(Bodies.rectangle(s.center+sign*330,g-34,130,68,{isStatic:true,friction:.9}));
+    });
     Events.on(this.engine,'collisionStart', e=>this.collisions(e.pairs));
     Events.on(this.engine,'collisionActive', e=>this.collisions(e.pairs));
-    SIDES.forEach((s,side)=>this.starter(side));
+    this.sides.forEach((s,side)=>this.starter(side));
     this.step(120); this.events=[];
   }
   addTerrain(body) { body.label='terrain'; this.terrainBodies.push(body); Composite.add(this.engine.world,body); }
@@ -29,33 +36,49 @@ export class SiegeWorld {
     else body=Bodies.rectangle(x,y,w,h,options);
     Body.setPosition(body,{x,y});
     Body.setAngle(body,angle);
-    return this.add(body,{kind:'block',side,material,w,h,shape,maxHealth:m.health * Math.sqrt(w*h/2160),...extra});
+    return this.add(body,{kind:'block',side,material,w,h,shape,maxHealth:m.health * (w*h/2160),...extra});
   }
   soldier(side,x,y) {
-    return this.add(Bodies.rectangle(x,y,15,27,{density:.0018,friction:.9,restitution:0,slop:.02,sleepThreshold:75,chamfer:{radius:4}}),{kind:'soldier',side,maxHealth:8,w:15,h:27,crush:0});
+    return this.add(Bodies.rectangle(x,y,15,27,{density:.0018,friction:.9,restitution:0,slop:.02,sleepThreshold:75,chamfer:{radius:4}}),{kind:'soldier',side,maxHealth:16,w:15,h:27,crush:0});
   }
   starter(side) {
-    const x=SIDES[side].center,g=WORLD.ground;
-    // Three independent bays turn a support failure into a local breach.
-    // Adjacent roofs touch separate halves of shared posts, with no rigid joints.
-    [-96,-32,32,96].forEach(d=>this.block(side,'wood',x+d,g-39,16,78));
-    [-64,0,64].forEach(d=>this.block(side,'wood',x+d,g-89,63,22));
-    [-64,0,64].forEach(d=>this.soldier(side,x+d,g-15));
+    const x=this.sides[side].center,g=this.foundation(side);
+    // Disconnected low bunkers: short spans, buttressed double walls and sacrificial caps.
+    for(const offset of [-150,0,150]){
+      const c=x+offset;
+      for(const sign of [-1,1]){
+        this.block(side,'stone',c+sign*47,g-28,26,56);
+        this.block(side,'wood',c+sign*69,g-35,18,70);
+      }
+      this.block(side,'wood',c,g-63,116,14);
+      this.block(side,'stone',c,g-76,108,12);
+      this.soldier(side,c,g-15);
+    }
   }
+  foundation(side){return WORLD.ground-(this.terrain==='highlands'?100:0);}
   get troops() { return [0,1].map(s=>[...this.entities.values()].filter(e=>e.kind==='soldier'&&e.side===s)); }
   remove(e) {
     if (!this.entities.has(e.body.id)) return;
     this.entities.delete(e.body.id); Composite.remove(this.engine.world,e.body);
-    // Wake sleeping contact islands when a support disappears.
-    for (const other of this.entities.values()) if (Math.abs(other.body.position.x-e.body.position.x)<Math.max(e.w??40,other.w??40)+80 && Math.abs(other.body.position.y-e.body.position.y)<180) Sleeping.set(other.body,false);
+    // Wake the connected dynamic island, including towers taller than a local
+    // radius. Ground is excluded so two distant forts do not wake one another.
+    const remaining=[...this.entities.values()],queue=[e.body],seen=new Set();
+    while(queue.length){const base=queue.pop();for(const other of remaining){
+      if(seen.has(other.body.id))continue;
+      const a=base.bounds,b=other.body.bounds;
+      const near=a.max.x>=b.min.x-2&&b.max.x>=a.min.x-2&&a.max.y>=b.min.y-2&&b.max.y>=a.min.y-2;
+      if(near){seen.add(other.body.id);Sleeping.set(other.body,false);queue.push(other.body);}
+    }}
+
   }
   emit(type,x,y,amount=1,material='wood') { this.events.push({type,x,y,amount,material,time:this.time}); if(this.events.length>100) this.events.shift(); }
   hurt(e,amount,source) {
     if(!this.entities.has(e.body.id)||!Number.isFinite(amount)||amount<=0) return;
     e.health-=amount;
     this.history.push({kind:e.kind,side:e.side,amount,source,time:this.time}); if(this.history.length>200) this.history.shift();
+    if(e.kind==='block'&&e.health<e.maxHealth*.55&&!e.weakened){e.weakened=true;e.body.friction*=.65;e.body.frictionStatic*=.7;this.emit('crack',e.body.position.x,e.body.position.y,2,e.material);}
     if(e.health<=0) {
-      if(e.kind==='soldier') { this.emit('defeat',e.body.position.x,e.body.position.y,1); this.remove(e); }
+      if(e.kind==='soldier') { this.deaths.push({side:e.side,source,time:this.time,shot:this.totalShots??0});this.emit('defeat',e.body.position.x,e.body.position.y,1); this.remove(e); }
       else if(e.kind==='block'&&!e.fractureAt) e.fractureAt=this.time+100;
     }
   }
@@ -72,12 +95,12 @@ export class SiegeWorld {
       if(impact.closing<1.4)continue;
       for(const [target,other,otherBody] of [[ea,eb,b],[eb,ea,a]]) {
         if(!target||target.kind==='projectile')continue;
-        let damage=impact.energy*.11;
+        let damage=impact.energy*.09;
         if(target.kind==='block')damage/=MATERIALS[target.material].resistance;
-        if(other?.kind==='projectile') damage*=AMMO[other.ammo].damage*1.7;
+        if(other?.kind==='projectile') damage*=AMMO[other.ammo].damage;
         if(target.kind==='soldier') {
           damage*=2.1;
-          if(otherBody.isStatic&&impact.closing<3.8)damage=0;
+          if(otherBody.isStatic&&impact.closing<4.5)damage=0;
           // Opposed ground reaction makes a pinned soldier absorb the descending load.
           if(other?.kind==='block'&&otherBody.position.y<target.body.position.y&&target.body.position.y>WORLD.ground-35&&otherBody.velocity.y>1.2)
             damage=Math.max(damage,otherBody.mass*otherBody.velocity.y*.8);
@@ -91,30 +114,31 @@ export class SiegeWorld {
   }
   fracture(e) {
     const {body:b,w,h,material,side}=e;
-    if(this.fragmentCount>=60||e.generation>=1||Math.min(w,h)<12) {e.health=1;e.fractureAt=null;e.cracked=true;return;}
+    if(this.fragmentCount>=160||e.generation>=3||w*h<180) {e.health=1;e.fractureAt=null;e.cracked=true;return;}
     const pos={...b.position},vel={...b.velocity},angle=b.angle,av=b.angularVelocity;
     this.remove(e); this.emit('break',pos.x,pos.y,Math.min(b.mass,10),material);
     const horizontal=w>=h;
     for(const sign of [-1,1]) {
       const offset=horizontal?{x:sign*w/4,y:0}:{x:0,y:sign*h/4}; const d=Vector.rotate(offset,angle);
-      const f=this.block(side,material,pos.x+d.x,pos.y+d.y,horizontal?w/2-1:w,horizontal?h:h/2-1,angle,'rect',{generation:1,fragment:true});
-      Body.setMass(f.body,b.mass/2); Body.setVelocity(f.body,{x:vel.x-av*d.y,y:vel.y+av*d.x}); Body.setAngularVelocity(f.body,av); this.fragmentCount++;
+      const f=this.block(side,material,pos.x+d.x,pos.y+d.y,horizontal?w/2-1:w,horizontal?h:h/2-1,angle,'rect',{generation:(e.generation??0)+1,fragment:true});
+      f.health=f.maxHealth*=.25;Body.setMass(f.body,b.mass/2); Body.setVelocity(f.body,{x:vel.x-av*d.y,y:vel.y+av*d.x}); Body.setAngularVelocity(f.body,av); this.fragmentCount++;
     }
   }
   explode(e) {
     if(e.exploded||!this.entities.has(e.body.id))return; e.exploded=true;
-    const pos={...e.body.position}; this.emit('blast',pos.x,pos.y,140); this.remove(e);
+    const pos={...e.body.position}; this.emit('blast',pos.x,pos.y,115); this.remove(e);
     for(const t of [...this.entities.values()]) {
       const dx=t.body.position.x-pos.x,dy=t.body.position.y-pos.y,dist=Math.hypot(dx,dy);
-      if(dist>150)continue;
-      const f=1-dist/150; Sleeping.set(t.body,false);
-      Body.setVelocity(t.body,{x:t.body.velocity.x+dx/(dist||1)*f*10,y:t.body.velocity.y+dy/(dist||1)*f*10-2*f});
-      this.hurt(t,(t.kind==='soldier'?16:50)*f/(t.material?MATERIALS[t.material].resistance:1),'blast');
+      if(dist>115||t.kind==='projectile')continue;
+      let f=1-dist/115;
+      const shields=Query.ray([...this.entities.values()].filter(b=>b!==t&&b.kind==='block').map(b=>b.body),pos,t.body.position);if(shields.length)f*=.22; Sleeping.set(t.body,false);
+      Body.setVelocity(t.body,{x:t.body.velocity.x+dx/(dist||1)*f*4.5,y:t.body.velocity.y+dy/(dist||1)*f*4.5-2*f});
+      this.hurt(t,(t.kind==='soldier'?14:48)*f/(t.material?MATERIALS[t.material].resistance:1),'blast');
     }
   }
   launch(side,velocity,ammo='bolt',xOffset=0) {
-    if(this.shot)return false; this.armed=true;
-    const config=AMMO[ammo],s=SIDES[side];
+    if(this.shot)return false; this.armed=true;this.totalShots=(this.totalShots??0)+1;
+    const config=AMMO[ammo],s=this.sides[side];
     const body=Bodies.circle(s.launcher[0]+xOffset,s.launcher[1]-20,config.radius,{density:config.density,friction:.7,restitution:.08,frictionAir:.0002});
     const e=this.add(body,{kind:'projectile',ammo,side,maxHealth:1e6});
     Body.setVelocity(body,velocity); this.shot={entity:e,age:0,quiet:0,origin:{...body.position},trail:[]};
@@ -122,7 +146,7 @@ export class SiegeWorld {
   }
   advance() {
     this.time+=STEP;
-    Engine.update(this.engine,STEP);
+    Engine.update(this.engine,STEP/2);Engine.update(this.engine,STEP/2);
     for(const {e,amount,source} of this.pending.values())this.hurt(e,amount,source);this.pending.clear();
     for(const e of this.blasts)this.explode(e);this.blasts.clear();
     for(const e of [...this.entities.values()]) {
@@ -130,33 +154,25 @@ export class SiegeWorld {
       if(e.kind==='soldier'&&e.body.position.y>WORLD.ground+100)this.hurt(e,100,'out-of-bounds');
       if(e.kind==='soldier'&&this.armed) {
         // Sustained compression: real contacts above and below, not proximity alone.
-        let above=0,below=false;
-        // Sleeping pairs stop emitting active events. Query their current geometry so
-        // a settled load remains a load; tolerate brief solver contact flicker.
-        const contacts=Query.collides(e.body,[...this.terrainBodies,...[...this.entities.values()].filter(t=>t!==e&&t.kind==='block').map(t=>t.body)]);
-        for(const contact of contacts) {
-          const a=contact.bodyA.parent,b=contact.bodyB.parent;
-          const o=a===e.body?b:b===e.body?a:null;if(!o)continue;
-          if(o.position.y>e.body.position.y+7)below=true;
-          if(o.position.y<e.body.position.y-8&&o.plugin.entity?.kind==='block')above+=o.mass;
-        }
+        const {above,below}=this.compressionLoad(e);
         if(below&&above>e.body.mass*2.8){e.crush+=STEP;e.lastLoad=above;e.lastCompression=this.time;}
         else if(this.time-(e.lastCompression??-Infinity)>100)e.crush=0;
         if(e.crush>350)this.hurt(e,(e.lastLoad??0)*.05,'compression');
       }
-      if(e.kind!=='soldier'&&(e.body.position.y>1200||e.body.position.x< -300||e.body.position.x>2700))this.remove(e);
+      if(e.kind!=='soldier'&&(e.body.position.y>1200||e.body.position.x< -300||e.body.position.x>this.layout.width+300))this.remove(e);
     }
+    if(Math.round(this.time/STEP)%120===0)this.cleanDebris();
     if(this.shot) {
       const s=this.shot;s.age+=STEP;
       if(s.trail.length<220&&this.entities.has(s.entity.body.id)&&s.age%50<STEP)s.trail.push({...s.entity.body.position});
-      if(s.entity.ammo==='bomb'&&s.age>5200&&!s.entity.exploded)this.explode(s.entity);
+      if(s.entity.ammo==='bomb'&&s.age>10000&&!s.entity.exploded)this.explode(s.entity);
       const flying=this.entities.has(s.entity.body.id)&&!s.entity.hitAt&&s.entity.body.position.y<WORLD.ground+40;
       const moving=[...this.entities.values()].some(e=>!e.body.isSleeping&&(e.kind!=='projectile')&&(e.body.speed>.65||Math.abs(e.body.angularVelocity)>.025)||e.fractureAt||(e.kind==='soldier'&&e.crush>0));
       s.quiet=(!flying&&!moving)?s.quiet+STEP:0;
     }
   }
   step(n=1) { for(let i=0;i<n;i++)this.advance(); }
-  shotFinished() {return !!this.shot&&(this.shot.quiet>650||this.shot.age>12000);}
+  shotFinished() {return !!this.shot&&(this.shot.quiet>650||this.shot.age>14000);}
   finishShot() {
     // Keep all structural debris. Only spent ammunition is removed between turns.
     for(const e of [...this.entities.values()])if(e.kind==='projectile')this.remove(e);
@@ -169,26 +185,26 @@ export class SiegeWorld {
     // and compound repair elbows, rather than a nominal rectangular footprint.
     const bounds=probe.body.bounds;
     const offsets={left:bounds.min.x-x,right:bounds.max.x-x,top:bounds.min.y-y,bottom:bounds.max.y-y};
-    const zone=SIDES[side].zone;
+    const zone=this.sides[side].zone;
     x=clamp(x,zone[0]-offsets.left,zone[1]-offsets.right);
-    y=clamp(y,WORLD.ground-330-offsets.top,WORLD.ground-offsets.bottom);
+    y=clamp(y,WORLD.ground-this.layout.buildHeight-offsets.top,WORLD.ground-offsets.bottom);
     if(snap) {
       let bestX=11,bestY=11,px=x,py=y;
       const tryX=v=>{if(Math.abs(v-x)<bestX){bestX=Math.abs(v-x);px=v;}};
       const tryY=v=>{if(Math.abs(v-y)<bestY){bestY=Math.abs(v-y);py=v;}};
       tryY(WORLD.ground-offsets.bottom);
-      for(const e of this.entities.values())if(e!==probe&&e.side===side&&e.kind==='block'){
+      for(const e of [...this.entities.values(),...this.terrainBodies.map(body=>({body,side,kind:'block'}))])if(e!==probe&&e.side===side&&e.kind==='block'){
         const b=e.body.bounds;
         if(y+offsets.bottom>b.min.y-12&&y+offsets.top<b.max.y+12){tryX(b.min.x-offsets.right-1);tryX(b.max.x-offsets.left+1);tryX((b.min.x+b.max.x-offsets.left-offsets.right)/2);}
         if(x+offsets.right>b.min.x-12&&x+offsets.left<b.max.x+12){tryY(b.min.y-offsets.bottom-1);tryY(b.max.y-offsets.top+1);}
       }
       x=clamp(px,zone[0]-offsets.left,zone[1]-offsets.right);
-      y=clamp(py,WORLD.ground-330-offsets.top,WORLD.ground-offsets.bottom);
+      y=clamp(py,WORLD.ground-this.layout.buildHeight-offsets.top,WORLD.ground-offsets.bottom);
     }
     Body.setPosition(probe.body,{x,y});
     const vertices=(probe.body.parts.length>1?probe.body.parts.slice(1):[probe.body]).map(part=>part.vertices.map(v=>({x:v.x,y:v.y})));
     Body.scale(probe.body,.96,.96);
-    const collisions=Query.collides(probe.body,[...this.entities.values()].filter(e=>e!==probe).map(e=>e.body));
+    const collisions=Query.collides(probe.body,[...this.terrainBodies,...[...this.entities.values()].filter(e=>e!==probe).map(e=>e.body)]);
     this.entities.delete(probe.body.id);Composite.remove(this.engine.world,probe.body);
     const valid=!collisions.length;
     return {x,y,angle,valid,piece:p,vertices};
@@ -197,6 +213,50 @@ export class SiegeWorld {
     const check=this.placement(side,piece,x,y,angle);if(!check.valid)return false;
     const p=check.piece; const e=this.block(side,p.material,check.x,check.y,p.w,p.h,angle,p.shape);
     this.emit('place',check.x,check.y);return e;
+  }
+  compressionLoad(e){
+    const bodies=[...this.terrainBodies,...[...this.entities.values()].map(t=>t.body)];
+    const contacts=new Map(),loads=new Map();
+    const touching=body=>{if(!contacts.has(body.id))contacts.set(body.id,Query.collides(body,bodies.filter(b=>b!==body)).filter(c=>Math.abs(c.normal.y)>.35).map(c=>c.bodyA.parent===body?c.bodyB.parent:c.bodyA.parent));return contacts.get(body.id);};
+    const load=body=>{
+      if(loads.has(body.id))return loads.get(body.id);
+      let sum=body.mass;
+      for(const upper of touching(body))if(!upper.isStatic&&upper.plugin.entity?.kind==='block'&&upper.position.y<body.position.y-8){
+        const supports=touching(upper).filter(lower=>lower.position.y>upper.position.y+8);
+        sum+=load(upper)/Math.max(1,supports.length);
+      }
+      loads.set(body.id,sum);return sum;
+    };
+    const below=touching(e.body).some(b=>b.position.y>e.body.position.y+7);
+    return{above:load(e.body)-e.body.mass,below};
+  }
+  supported(e){
+    const b=e.body.bounds;
+    return [...this.entities.values()].some(t=>t!==e&&t.body.bounds.max.y>b.min.y-5&&t.body.bounds.min.y<b.max.y+5&&t.body.bounds.min.x<b.max.x+4&&t.body.bounds.max.x>b.min.x-4&&(t.kind==='soldier'||t.body.position.y<e.body.position.y));
+  }
+  clearable(e,side){
+    return e?.side===side&&e.kind==='block'&&e.fragment&&e.body.isSleeping&&!e.fractureAt&&!this.supported(e);
+  }
+  cleanDebris(){
+    for(const e of [...this.entities.values()])if(e.fragment&&e.w*e.h<650&&e.body.isSleeping&&this.time-e.born>3000&&!this.supported(e)){
+      this.emit('dust',e.body.position.x,e.body.position.y,1,e.material);this.remove(e);this.cleanupCount++;
+    }
+    this.fragmentCount=[...this.entities.values()].filter(e=>e.fragment).length;
+  }
+  soldierPlacement(e,x,y){
+    const zone=this.sides[e.side].zone;x=clamp(x,zone[0]+10,zone[1]-10);y=clamp(y,WORLD.ground-this.layout.buildHeight+16,WORLD.ground-14);
+    // Snap feet to nearby physical floors, then require a real support surface.
+    const surfaces=[...this.terrainBodies,...[...this.entities.values()].filter(t=>t!==e&&t.kind==='block').map(t=>t.body)];
+    let best=25;
+    for(const b of surfaces)if(x-5>b.bounds.min.x&&x+5<b.bounds.max.x){const candidate=b.bounds.min.y-14; if(Math.abs(candidate-y)<best){best=Math.abs(candidate-y);y=candidate;}}
+    const probe=Bodies.rectangle(x,y,14,26);
+    const overlapping=Query.collides(probe,[...surfaces,...this.troops.flat().filter(t=>t!==e).map(t=>t.body)]).some(c=>c.depth>1);
+    const floor=Query.collides(Bodies.rectangle(x,y+15,10,4),surfaces).length>0;
+    return {x,y,angle:0,valid:floor&&!overlapping,vertices:[probe.vertices.map(v=>({x:v.x,y:v.y}))],piece:{w:15,h:27}};
+  }
+  moveSoldier(e,x,y){
+    const p=this.soldierPlacement(e,x,y);if(!p.valid)return false;
+    Body.setPosition(e.body,p);Body.setAngle(e.body,0);Body.setVelocity(e.body,{x:0,y:0});Body.setAngularVelocity(e.body,0);Sleeping.set(e.body,false);e.crush=0;e.lastCompression=-Infinity;e.lastLoad=0;return true;
   }
   dispose() { Events.off(this.engine);Composite.clear(this.engine.world,false);Engine.clear(this.engine);this.entities.clear(); }
 }

@@ -1,0 +1,15 @@
+{"scale":"skirmish","terrain":"valley","difficulty":"normal","seed":17,"shots":48,"phases":8,"survivors":[2,1],"winner":0,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"compression":3},"peakBodies":186,"p95StepMs":0.6552779999997256,"maxStepMs":65.18110999999999,"wallMs":4972.010243}
+{"scale":"skirmish","terrain":"valley","difficulty":"normal","seed":71,"shots":48,"phases":8,"survivors":[1,3],"winner":1,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"compression":1,"projectile":1},"peakBodies":169,"p95StepMs":0.5189460000001418,"maxStepMs":17.819179999999506,"wallMs":3632.0673640000005}
+{"scale":"skirmish","terrain":"valley","difficulty":"normal","seed":1042,"shots":48,"phases":8,"survivors":[2,2],"winner":-1,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"compression":2},"peakBodies":161,"p95StepMs":0.5945350000001781,"maxStepMs":20.998093000000154,"wallMs":3956.3635399999985}
+{"scale":"grand","terrain":"valley","difficulty":"normal","seed":17,"shots":60,"phases":10,"survivors":[1,2],"winner":1,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"compression":2,"projectile":1},"peakBodies":235,"p95StepMs":1.2213059999994584,"maxStepMs":16.023643000000448,"wallMs":9216.604567999999}
+{"scale":"grand","terrain":"valley","difficulty":"normal","seed":71,"shots":60,"phases":10,"survivors":[1,2],"winner":1,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"projectile":1,"compression":2},"peakBodies":236,"p95StepMs":1.3370140000006359,"maxStepMs":38.41207700000086,"wallMs":10899.919513000004}
+{"scale":"grand","terrain":"valley","difficulty":"normal","seed":1042,"shots":60,"phases":10,"survivors":[2,2],"winner":-1,"beforeRepair":false,"firstShotCatastrophe":false,"deaths":{"projectile":1,"compression":1},"peakBodies":233,"p95StepMs":1.0320089999950142,"maxStepMs":12.66682800000126,"wallMs":7596.7375239999965}
+SUMMARY {
+  matches: 6,
+  averageShots: 54,
+  averagePhases: 9,
+  beforeFirstRepair: 0,
+  firstShotCatastrophes: 0,
+  peakBodies: 236,
+  deaths: { compression: 11, projectile: 4 }
+}

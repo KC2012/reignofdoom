@@ -1,63 +1,70 @@
-# Reign of Doom — Alpha 1
+# Reign of Doom — Alpha 2
 
-**Little forts. Loud consequences.** A standalone browser game about building toy fortifications, protecting three tiny soldiers, and knocking the other side over. Local two-player hot-seat and single-player versus CPU. No accounts, backend, paid services, remote assets or API keys.
+**The Great Siege Update.** Build physical fortifications, protect three soldiers, bombard the opposing castle, and repair the wreckage. Local hot-seat and single-player versus CPU. Self-contained browser game; no accounts, backend, paid services, external assets or API keys.
 
-## Run from source
+## Play the packaged game
 
-Use Node.js 24 and npm 11 (validated with 24.22.1 / 11.9.0).
+Extract `downloads/reign-of-doom-alpha2-browser.zip`, open a terminal in its extracted folder, and run:
+
+```sh
+node scripts/serve.mjs
+```
+
+Open the local address printed by the server. Node 24 is recommended. No npm install is needed for this package. The complete ZIP also includes `dist/`, source, tests and documentation; the same server command runs its built game. Opening `index.html` as a file URL is unsupported because browsers require HTTP for modules.
+
+## Develop and validate
+
+From `/workspace/reignofdoom` (or your extracted source directory), use Node 24 and npm:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the address printed by Vite in your local browser. Pick **Play against CPU** or **Two players**. Choose one of three mirrored battlefields, a seed, and CPU difficulty on the title screen. The environment's checkout is `/workspace/reignofdoom`.
-
-For a production build:
+For production: `npm run build`, then `node scripts/serve.mjs`. Vite's dev server listens on port 5173; the packaged server binds to your local loopback interface on port 8080 (`PORT` overrides it). Any static HTTP host can serve `dist/`.
 
 ```sh
+npm test                            # 42 actual rule, physics and match tests
 npm run build
-node scripts/serve.mjs
+npm run test:browser                 # 18 production Chromium checks
+node scripts/audit-matches.mjs       # 45 complete Siege duels: 5 fields × 3 difficulties × 3 seeds
+node scripts/audit-matches.mjs --quick --scales # 6 complete Skirmish/Grand duels
+node scripts/measure-debris.mjs      # heavy collision/debris simulation timing
+python3 scripts/package.py          # regenerate downloadable ZIPs after building
 ```
 
-The server binds to your computer's loopback interface on port 8080 (`PORT` can override it). You can also host `dist/` on any static HTTP server. The downloadable browser package contains the built game and a Node static server; it needs no npm installation. ES modules require HTTP: do not double-click `index.html` as a file URL.
+Browser tests use `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation. They start/stop their own preview on port 4173. Fresh results go to ignored `test-results/alpha2/`. Retained release evidence lives in `docs/verification/alpha2/`. Python is only used for optional ZIP packaging, not building or playing the game.
 
-## Play
+## Match rhythm
 
-- **Build, 45 seconds per side:** drag a piece from the tray onto your fort. Alternatively, select it and click the battlefield. Green previews fit; red previews overlap. Edges snap. R, right-click, or Rotate turns the piece. Click and drag your existing blocks to reposition them. Escape cancels and restores a held block. “Fort ready” advances early.
-- **Fire, one shot per side:** pull away from the enemy and slightly downward, then release. Longer drags fire harder. You can drag anywhere on the battlefield or use the Angle / Power sliders and Fire button (Space). A dotted arc predicts unobstructed flight. Firing times out after 35 seconds with an automatic shot.
-- **Repair, 15 seconds per side:** fit five supplied pieces into the wreckage, including a compound elbow. Existing debris remains physical and soldiers never respawn. Finish early with “Repair done.” A Breaker or Burst charge replenishes on alternating repair rounds, capped at three.
-- **Win:** eliminate the opposing three soldiers. Debris, falls, explosions and sustained crushing count. Ten rounds is the siege limit; survivors decide, with ties declared a draw. The starting shooter alternates each round. Rematch resets the world.
-- **View / pause:** V toggles overview and fort framing; Auto camera restores phase/impact framing. P pauses. Field manual opens detailed controls. Sound starts after interaction and can be toggled.
+Choose a field, match scale, seed and CPU difficulty at the title screen. Each side starts with three independently roofed, double-walled bunkers. They are fully dynamic structures: placement never welds blocks together.
 
-Touch supports tray dragging, Rotate, slingshot gestures and sliders. Desktop landscape gives the clearest view of the full battlefield. There is no network multiplayer or match persistence.
+**Build → six alternating shots (three each) → repair → repeat.** The starting shooter alternates each bombardment. Initial build/repair timers are 55/24 seconds in Skirmish, 70/30 in Siege and 90/40 in experimental Grand Siege. “Fort ready” and “Repair done” advance early. Each shot has a 35-second aiming window; expiry fires an automatically ranged shot.
 
-## Materials and ammunition
+Eliminate the other side's three soldiers. At the limit (8 bombardments for Skirmish/Siege, 10 for Grand), surviving soldiers decide; ties draw. There are no early-victory protections or global castle health. Falling structures, direct hits, explosions and sustained compression can kill soldiers. Repairs never revive them.
 
-| Material | Physical role |
-| --- | --- |
-| Timber | Moderate mass, high grip, reliable building; splits under large impacts |
-| Stone | Dense, high friction, brittle under concentrated energy; dangerous falling load |
-| Steel | Very dense, strong, less grippy; can survive hits and crush what's below |
-| Cork | Very light and springy; dissipates momentum through motion, weak under fracture |
+## Controls
 
-Pieces: timber brick, beam and pillar; stone block; steel slab; cork wedge; timber elbow in repair drops. Three separate starter bays reduce shared-roof failures. All are dynamic bodies: snapping does not weld blocks together.
+- **Construction:** drag a tray piece to the battlefield, or select and click. R, right-click or Rotate turns it. Green fits; red overlaps. Click and drag your existing blocks to reposition them. Escape cancels a held piece. Materials differ in density, grip, rebound and fracture resistance.
+- **Soldiers:** drag a soldier to a clear, supported surface in your territory. Ground, floors and platforms work; midair placement does not. Initial placement is unlimited. Each repair permits one successful soldier move. They remain physical, vulnerable bodies.
+- **Artillery:** drag back from the ballista, or anywhere on the battlefield, then release. Use Angle / Power sliders plus Fire (Space) for fine control. **Range target** calculates useful starting power for the chosen angle and ammunition; refine it to attack a particular breach. The arc predicts free flight, not penetration through blocks.
+- **Ammunition:** Bolt is unlimited, concentrates damage; Breaker is slower and transfers more momentum into supports and rubble; Burst applies a smaller radial blast, attenuated by intervening blocks. Specials replenish on alternating repairs, capped at three.
+- **Repairs:** six seeded supply pieces, including an elbow assembly. “Clear rubble” gives three removals of settled, unsupported fragments per side. Active hazards, intact blocks and load-bearing fragments cannot be cleared through this tool. Small, old, harmless chips can also settle out automatically; substantial wreckage persists.
+- **Camera:** V toggles overview/own fort. Enemy fort inspects the other side. Auto camera restores activity framing. Pan mode supports one-finger dragging; Shift-drag or middle mouse also pans. Wheel, +/- buttons or two-finger pinch zoom. Aiming includes a live enemy inset; flight follows the projectile; impact frames the damaged fort. Construction framing cuts to the active territory so placement is immediately usable.
+- **Pause:** P or the pause button. Opening the manual pauses play. Losing browser focus pauses play. Sound unlocks after interaction and can be toggled.
 
-The standard **Bolt** is unlimited and precise. **Breaker** is slower, denser and transfers more momentum. **Burst** detonates on contact, kicking and damaging bodies within its radius. Each ammo type has its own previewed trajectory. Ballista positions are fixed on the inner flanks to keep firing readable.
+Landscape desktop/tablet gives the clearest tactical view. Portrait touch construction, pan/zoom, phase handoff and slingshot firing are verified at 390 px width. Placement still needs a pointer; this is not a fully keyboard-operated game.
 
-## Test and tune
+## Fields and scales
 
-```sh
-npm test                     # 24 rule, match and physical regression tests
-npm run build
-npm run test:browser          # 14 production-browser checks, including touch
-node scripts/audit-matches.mjs # 12 seeded, automated complete matches
-```
+Lowlands offers open ground; The Divide has a central ridge; Terraces adds mirrored foundation shelves; The Chasm removes the central ground; High Ground raises both fort foundations. Fields are authored and mirrored. Seeds vary stock and CPU decisions, not the terrain geometry.
 
-The browser runner uses `/usr/bin/chromium` by default. Set `CHROMIUM_PATH` to a Chrome/Chromium executable on other systems; Playwright is installed by `npm ci`. The runner starts and stops its own production preview on port 4173. Results and screenshots go to ignored `test-results/`; retained release evidence is in `docs/verification/`. Tests use the same simulation as the game. Artificial victory and load fixtures are identified in the test source.
+Skirmish spans 4,000 world units, Siege 4,800, and Grand Siege 6,400. Siege build territories are 900 units wide and 560 high (versus Alpha 1's 410 × 330). Elevated launch pads keep the fixed ballistae outside normal fort interiors. Ballistae cannot be destroyed; moving them was deferred to preserve straightforward firing and avoid a launcher-loss softlock.
 
-**Proving ground** on the title screen starts a hot-seat test session. K drops a stone load over Ember's shelter; L withdraws Tide's lower supports; N advances a build/repair phase. You can place, fire and rematch normally. `window.__siege` exposes the live match, snapshots, fixed-step advancement and world/screen conversion for inspection. These fixture keys only work in the proving ground.
+## Proving ground and tuning
 
-Tune `src/rules.js` (stock, materials, launch scale), `src/match.js` (rounds, CPU, timing), and `src/simulation.js` (damage, compression, fracture). Canvas rendering and DOM controls live in `src/main.js`; synthesized audio is in `src/audio.js`. No art asset pipeline is required.
+The proving ground uses the same simulation and offers all map scales. K drops a real stone load over Ember, L withdraws Tide's lower supports, and N advances a phase. The footer shows body/fragment counts. `window.__siege` exposes the live match, snapshots, fixed-step advancement and coordinate conversion for inspection and automated fixtures.
 
-Read [the development report](docs/development-report.md) for decisions, validation limits and next playtests. Matter.js licensing and reference attribution are in `public/third-party-notices.txt`.
+`src/rules.js` contains materials, stock and shared ballistic prediction/solver. `battlefields.js` defines scalable mirrored maps. `simulation.js` owns rigid bodies, damage, recursive fracture, supported soldier placement, contact-transmitted compression and safe rubble cleanup. `match.js` owns turn rules, resources and CPU decisions. `camera.js` supplies testable framing and coordinate transforms. `main.js`, `style.css` and `audio.js` present the game.
+
+Read [the development report](docs/development-report.md) for measured balance, decisions, limitations and next human playtests. Automated checks validate mechanics, not fun. Alpha 1's historical report and verification remain available separately. Matter.js licensing/reference attribution is in `public/third-party-notices.txt`.

@@ -1,0 +1,15 @@
+{
+  "fixture": "144 falling structural blocks plus live Grand Siege shelters, 900 fixed steps with two physics substeps",
+  "peakBodies": 186,
+  "finalBodies": 186,
+  "fragments": 54,
+  "cleanupCount": 0,
+  "p50StepMs": 0.11987799999999993,
+  "p95StepMs": 0.6105500000000035,
+  "p99StepMs": 0.9900050000000249,
+  "maxStepMs": 2.374997999999991,
+  "survivors": [
+    3,
+    3
+  ]
+}

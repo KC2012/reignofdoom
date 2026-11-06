@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import Matter from 'matter-js';
 import {random,initialInventory,repairInventory,pullVelocity,resultFor,MATERIALS,PIECES} from '../src/rules.js';
 import {contactImpact} from '../src/impact.js';
-test('seeded supply is repeatable and repairs contain exactly five pieces',()=>{
+test('seeded supply is repeatable and repairs contain exactly six pieces',()=>{
  const a=random(42),b=random(42);for(let i=0;i<20;i++)assert.deepEqual(repairInventory(a),repairInventory(b));
- const inv=repairInventory(random(13));assert.equal(Object.values(inv).reduce((a,b)=>a+b),5);assert.equal(inv.brace,1);
+ const inv=repairInventory(random(13));assert.equal(Object.values(inv).reduce((a,b)=>a+b),6);assert.equal(inv.brace,1);
  assert.equal(initialInventory().steel,1);assert.equal(initialInventory().brace,0);
 });
 test('slingshot rejects taps and caps launch velocity without changing direction',()=>{
- assert.equal(pullVelocity(2,3),null);let v=pullVelocity(-300,200);assert.ok(Math.abs(Math.hypot(v.x,v.y)-24.975)<.001);assert.ok(v.x>0&&v.y<0);
+ assert.equal(pullVelocity(2,3),null);let v=pullVelocity(-300,200);assert.ok(Math.abs(Math.hypot(v.x,v.y)-35.775)<.001);assert.ok(v.x>0&&v.y<0);
  assert.ok(Math.hypot(...Object.values(pullVelocity(-100,60,'heavy')))<Math.hypot(...Object.values(pullVelocity(-100,60,'bolt'))));
 });
 test('win, mutual elimination and siege-limit draws are explicit',()=>{

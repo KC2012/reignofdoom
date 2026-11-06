@@ -1,0 +1,2 @@
+PASS reign-of-doom-alpha2: standalone server serves Alpha 2 HTML, JavaScript and license notices without npm dependencies.
+PASS reign-of-doom-alpha2-complete: standalone server serves Alpha 2 HTML, JavaScript and license notices without npm dependencies.

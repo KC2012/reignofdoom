@@ -1,0 +1,25 @@
+{
+  "passed": 18,
+  "checks": [
+    "Alpha 2 title exposes five fields and three match scales",
+    "real tray drag places a block in expanded construction territory",
+    "existing blocks move and rotate without consuming stock",
+    "soldier pointer drag moves onto a validated ground surface",
+    "manual zoom and pan preserve world coordinate controls",
+    "pause freezes construction timers and simulation",
+    "long-range slingshot launch flies across the field and hands over",
+    "six alternating firing turns enter a six-piece repair with clearance controls",
+    "repair clearance removes a real settled fragment through the UI",
+    "repair handoff alternates the next bombardment opener",
+    "victory, clear result and clean rematch work with expanded shelters",
+    "CPU builds and takes a long-range firing turn",
+    "updated field manual and pause/resume lifecycle work",
+    "Skirmish and experimental Grand Siege start with their own resources",
+    "portrait touch drag places a supplied block",
+    "two-finger touch pinch zoom changes construction framing",
+    "touch phase handoff and slingshot launch work without horizontal overflow",
+    "production browser has no page errors or external runtime requests"
+  ],
+  "errors": [],
+  "externalRequests": []
+}

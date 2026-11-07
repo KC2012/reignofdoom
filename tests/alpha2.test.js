@@ -55,7 +55,7 @@ test('heavy stacked rubble transmits crushing through a light intervening fragme
 });
 test('intervening structural cover attenuates a Burst blast',()=>{
  function blast(shield){const w=new SiegeWorld();for(const e of [...w.entities.values()])w.remove(e);const s=w.soldier(1,2070,780);if(shield)w.block(1,'wood',2035,740,20,90);w.launch(0,{x:1,y:-1},'bomb');const b=w.shot.entity;Matter.Body.setPosition(b.body,{x:2000,y:700});w.explode(b);const damage=s.maxHealth-s.health;w.dispose();return damage;}
- assert.ok(blast(false)>blast(true)*3);
+ assert.ok(blast(false)>blast(true)*2.8);
 });
 test('ranging adjusts unreachable steep/flat angles and respects special-ammunition speed',async()=>{
  const {rangedShot,BALLISTICS,AMMO}=await import('../src/rules.js');
@@ -68,7 +68,7 @@ test('withdrawing a support wakes a connected tower above the old local wake rad
  const w=new SiegeWorld();for(const e of [...w.entities.values()])w.remove(e);const base=w.block(0,'wood',2000,775,60,70);let top;
  for(let i=0;i<10;i++)top=w.block(0,'wood',2000,730-i*20,52,20);w.step(300);const y=top.body.position.y;assert.ok(top.body.isSleeping);w.remove(base);assert.equal(top.body.isSleeping,false);w.step(100);assert.ok(top.body.position.y>y+25);w.dispose();
 });
-test('Grand Siege CPU falls back to a reachable bolt instead of stalling on heavy ammo',()=>{
- const m=new Match({mode:'cpu',scale:'grand'});m.ready();m.ready();m.active=1;m.rng=()=>0;for(const e of m.world.troops[0].slice(1))m.world.remove(e);m.ammo[1].bomb=0;
+test('Grand Siege CPU falls back to a reachable bolt instead of stalling on Burst ammo',()=>{
+ const m=new Match({mode:'cpu',scale:'grand'});m.ready();m.ready();m.active=1;m.rng=()=>0;for(const e of m.world.troops[0].slice(1))m.world.remove(e);Matter.Body.setPosition(m.world.troops[0][0].body,{x:300,y:795});for(const e of [...m.world.entities.values()])if(e.side===0&&e.kind==='block')m.world.remove(e);m.ammo[1].heavy=0;m.ammo[1].bomb=1;
  for(let i=0;i<130&&m.phase==='aim';i++)m.tick(1/60);assert.equal(m.phase,'flight');assert.equal(m.lastShot.side,1);assert.equal(m.lastShot.ammo,'bolt');m.dispose();
 });

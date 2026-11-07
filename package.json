@@ -1,6 +1,6 @@
 {
   "name": "reign-of-doom",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "test": "node --test --test-isolation=none tests/*.test.js",
     "test:browser": "node scripts/browser-test.mjs",
     "test:webkit": "node scripts/webkit-test.mjs",
+    "audit:chaos": "node scripts/audit-chaos.mjs",
     "audit:arcade": "node scripts/audit-arcade.mjs"
   },
   "dependencies": {

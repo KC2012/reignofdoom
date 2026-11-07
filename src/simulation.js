@@ -1,15 +1,17 @@
 import Matter from 'matter-js';
 import { WORLD, SIDES, MATERIALS, PIECES, AMMO, STEP, clamp } from './rules.js';
 import { battlefield } from './battlefields.js';
+import { damageReaction } from './reactive.js';
+import { assemblyParts } from './chaos.js';
 import { contactImpact } from './impact.js';
-const { Engine, Bodies, Body, Composite, Events, Query, Sleeping, Vector } = Matter;
+const { Engine, Bodies, Body, Composite, Events, Query, Sleeping, Vector, Constraint } = Matter;
 export class SiegeWorld {
   constructor(seed = 1, terrain = 'valley', scale='siege') {
     this.layout=battlefield(scale,terrain);this.sides=this.layout.sides;this.deaths=[];this.cleanupCount=0;
     this.engine=Engine.create({enableSleeping:true,positionIterations:10,velocityIterations:8});
     this.engine.gravity.y=.8; this.entities=new Map(); this.events=[]; this.time=0; this.armed=false;
     this.pending=new Map(); this.blasts=new Set(); this.shot=null; this.seed=seed; this.terrain=terrain;
-    this.terrainBodies=[]; this.history=[]; this.fragmentCount=0;
+    this.links=[];this.reactionHistory=[];this.terrainBodies=[]; this.history=[]; this.fragmentCount=0;
     const width=this.layout.width,g=WORLD.ground;
     if(terrain==='ravine'){
       this.addTerrain(Bodies.rectangle(width/4-100,g+200,width/2-200,400,{isStatic:true,friction:.9}));
@@ -24,14 +26,15 @@ export class SiegeWorld {
     Events.on(this.engine,'collisionStart', e=>this.collisions(e.pairs));
     Events.on(this.engine,'collisionActive', e=>this.collisions(e.pairs));
     this.sides.forEach((s,side)=>this.starter(side));
-    this.step(120); this.events=[];
+    this.step(120);this.environment();this.events=[];
   }
   addTerrain(body) { body.label='terrain'; this.terrainBodies.push(body); Composite.add(this.engine.world,body); }
   add(body, meta) { const e={body,health:meta.maxHealth??40,maxHealth:meta.maxHealth??40,born:this.time,...meta}; body.plugin.entity=e; this.entities.set(body.id,e); Composite.add(this.engine.world,body); return e; }
   block(side, material, x,y,w,h,angle=0,shape='rect', extra={}) {
     const m=MATERIALS[material]; const options={density:m.density,friction:m.friction,frictionStatic:m.friction+ .15,restitution:m.restitution,slop:.03,sleepThreshold:90};
     let body;
-    if (shape==='wedge') body=Bodies.fromVertices(x,y,[[{x:-w/2,y:h/2},{x:w/2,y:h/2},{x:w/2,y:-h/2}]],options);
+    if(assemblyParts(shape))body=Body.create({...options,parts:assemblyParts(shape).map(([dx,dy,pw,ph])=>Bodies.rectangle(x+dx,y+dy,pw,ph,options))});
+    else if (shape==='wedge') body=Bodies.fromVertices(x,y,[[{x:-w/2,y:h/2},{x:w/2,y:h/2},{x:w/2,y:-h/2}]],options);
     else if (shape==='brace') body=Body.create({...options,parts:[Bodies.rectangle(x-w/2+10,y,20,h,options),Bodies.rectangle(x+10,y+h/2-10,w-20,20,options)]});
     else body=Bodies.rectangle(x,y,w,h,options);
     Body.setPosition(body,{x,y});
@@ -43,22 +46,37 @@ export class SiegeWorld {
   }
   starter(side) {
     const x=this.sides[side].center,g=this.foundation(side);
-    // Disconnected low bunkers: short spans, buttressed double walls and sacrificial caps.
-    for(const offset of [-150,0,150]){
-      const c=x+offset;
-      for(const sign of [-1,1]){
-        this.block(side,'stone',c+sign*47,g-28,26,56);
-        this.block(side,'wood',c+sign*69,g-35,18,70);
-      }
-      this.block(side,'wood',c,g-63,116,14);
-      this.block(side,'stone',c,g-76,108,12);
-      this.soldier(side,c,g-15);
+    // Three seeded silhouettes, all mirrored; height creates real floors, not bonuses.
+    const style=this.seed%3;this.startStyle=['scaffold','bridge','keep'][style];
+    const height=style===2?96:130;
+    for(const dx of [-150,0,150]){
+      for(const sign of [-1,1])this.block(side,'wood',x+dx+sign*48,g-height/2,20,height);
+      this.block(side,'wood',x+dx,g-height-10,120,20);
+      // A useful small ground shelter remains, so building low stays legitimate.
+      if(dx===0)this.block(side,'stone',x,g-height-26,100,12);
+      this.soldier(side,x+dx,g-15);
     }
+    if(style===1)this.block(side,'wood',x+this.sides[side].direction*75,g-height-30,150,18);
+    if(style===2){this.block(side,'wood',x-38,g-height-57,20,50);this.block(side,'wood',x+38,g-height-57,20,50);this.block(side,'wood',x,g-height-92,170,20);}
+  }
+  environment(){
+    if(this.terrain==='powder')for(let side=0;side<2;side++){
+      const s=this.sides[side],g=this.foundation(side);this.block(side,'wood',s.center+s.direction*270,g-20,40,40,0,'rect',{reactive:'volatile',maxHealth:26});
+    }
+    if(this.terrain==='hanging')for(let side=0;side<2;side++)this.hangingWeight(side,this.sides[side].center+this.sides[side].direction*230,this.foundation(side));
+  }
+  hangingWeight(side,x,g){
+    const anchor=this.block(side,'wood',x,g-100,24,200,0,'rect',{reactive:'fuse',maxHealth:35,fixed:true});
+    Body.setStatic(anchor.body,true);
+    const weight=this.block(side,'metal',x-this.sides[side].direction*72,g-72,42,42,0,'rect',{reactive:'weight',maxHealth:180,fixed:true});
+    const constraint=Constraint.create({bodyA:anchor.body,pointA:{x:0,y:-96},bodyB:weight.body,length:140,stiffness:.95,damping:.06,render:{visible:false}});
+    Composite.add(this.engine.world,constraint);this.links.push({anchor,weight,constraint});return{anchor,weight,constraint};
   }
   foundation(side){return WORLD.ground-(this.terrain==='highlands'?100:0);}
   get troops() { return [0,1].map(s=>[...this.entities.values()].filter(e=>e.kind==='soldier'&&e.side===s)); }
   remove(e) {
     if (!this.entities.has(e.body.id)) return;
+    for(const link of [...this.links])if(link.anchor===e||link.weight===e){Composite.remove(this.engine.world,link.constraint);this.links.splice(this.links.indexOf(link),1);this.reactionHistory.push({type:'rope-release',cause:e.body.id,time:this.time});Sleeping.set(link.weight.body,false);}
     this.entities.delete(e.body.id); Composite.remove(this.engine.world,e.body);
     // Wake the connected dynamic island, including towers taller than a local
     // radius. Ground is excluded so two distant forts do not wake one another.
@@ -75,11 +93,12 @@ export class SiegeWorld {
   hurt(e,amount,source) {
     if(!this.entities.has(e.body.id)||!Number.isFinite(amount)||amount<=0) return;
     e.health-=amount;
+    if(damageReaction(this,e,amount,source))return;
     this.history.push({kind:e.kind,side:e.side,amount,source,time:this.time}); if(this.history.length>200) this.history.shift();
     if(e.kind==='block'&&e.health<e.maxHealth*.55&&!e.weakened){e.weakened=true;e.body.friction*=.65;e.body.frictionStatic*=.7;this.emit('crack',e.body.position.x,e.body.position.y,2,e.material);}
     if(e.health<=0) {
       if(e.kind==='soldier') { this.deaths.push({side:e.side,source,time:this.time,shot:this.totalShots??0});this.emit('defeat',e.body.position.x,e.body.position.y,1); this.remove(e); }
-      else if(e.kind==='block'&&!e.fractureAt) e.fractureAt=this.time+100;
+      else if(e.kind==='block'&&e.reactive!=='volatile'&&!e.fractureAt) e.fractureAt=this.time+100;
     }
   }
   collisions(pairs) {
@@ -93,6 +112,12 @@ export class SiegeWorld {
       const point=pair.collision.supports.find(Boolean)??{x:(a.position.x+b.position.x)/2,y:(a.position.y+b.position.y)/2};
       const impact=contactImpact(a,b,point,pair.collision.normal);
       if(impact.closing<1.4)continue;
+      for(const [projectile,target]of [[ea,eb],[eb,ea]])if(projectile?.kind==='projectile'&&target?.kind==='block'){
+        projectile.struck??=new Set();if(!projectile.struck.has(target.body.id)){projectile.struck.add(target.body.id);
+          if(projectile.ammo==='bolt'&&!target.body.isStatic&&impact.closing>3){const direction=Vector.normalise(projectile.body.velocity),kick=Math.min(7,impact.energy/(target.body.mass+1)*.035);Sleeping.set(target.body,false);Body.setVelocity(target.body,{x:target.body.velocity.x+direction.x*kick,y:target.body.velocity.y+direction.y*kick- .5*kick});Body.setAngularVelocity(target.body,target.body.angularVelocity+(point.y-target.body.position.y)*direction.x*.0007);this.reactionHistory.push({type:'smash-impulse',cause:projectile.body.id,target:target.body.id,time:this.time});}
+          if(projectile.ammo==='heavy'&&projectile.struck.size<=3)projectile.pierce={target,velocity:{...projectile.body.velocity}};
+        }
+      }
       for(const [target,other,otherBody] of [[ea,eb,b],[eb,ea,a]]) {
         if(!target||target.kind==='projectile')continue;
         let damage=impact.energy*.09;
@@ -126,13 +151,13 @@ export class SiegeWorld {
   }
   explode(e) {
     if(e.exploded||!this.entities.has(e.body.id))return; e.exploded=true;
-    const pos={...e.body.position}; this.emit('blast',pos.x,pos.y,115); this.remove(e);
+    const pos={...e.body.position}; this.reactionHistory.push({type:'explosion',cause:e.body.id,trigger:e.reactionCause??'projectile-contact',time:this.time});this.emit('blast',pos.x,pos.y,145); this.remove(e);
     for(const t of [...this.entities.values()]) {
       const dx=t.body.position.x-pos.x,dy=t.body.position.y-pos.y,dist=Math.hypot(dx,dy);
-      if(dist>115||t.kind==='projectile')continue;
-      let f=1-dist/115;
-      const shields=Query.ray([...this.entities.values()].filter(b=>b!==t&&b.kind==='block').map(b=>b.body),pos,t.body.position);if(shields.length)f*=.22; Sleeping.set(t.body,false);
-      Body.setVelocity(t.body,{x:t.body.velocity.x+dx/(dist||1)*f*4.5,y:t.body.velocity.y+dy/(dist||1)*f*4.5-2*f});
+      if(dist>145||t.kind==='projectile')continue;
+      let f=1-dist/145;
+      const shields=Query.ray([...this.entities.values()].filter(b=>b!==t&&b.kind==='block').map(b=>b.body),pos,t.body.position);if(shields.length)f*=.35; Sleeping.set(t.body,false);
+      Body.setVelocity(t.body,{x:t.body.velocity.x+dx/(dist||1)*f*7,y:t.body.velocity.y+dy/(dist||1)*f*7-2*f});
       this.hurt(t,(t.kind==='soldier'?14:48)*f/(t.material?MATERIALS[t.material].resistance:1),'blast');
     }
   }
@@ -148,7 +173,8 @@ export class SiegeWorld {
     this.time+=STEP;
     Engine.update(this.engine,STEP/2);Engine.update(this.engine,STEP/2);
     for(const {e,amount,source} of this.pending.values())this.hurt(e,amount,source);this.pending.clear();
-    for(const e of this.blasts)this.explode(e);this.blasts.clear();
+    for(const projectile of this.entities.values())if(projectile.pierce){const {target,velocity}=projectile.pierce;delete projectile.pierce;if(target.health<=0&&this.entities.has(target.body.id)&&!target.reactive){this.fracture(target);Body.setVelocity(projectile.body,{x:velocity.x*.8,y:velocity.y*.8});this.reactionHistory.push({type:'penetration',cause:projectile.body.id,target:target.body.id,time:this.time});}}
+    for(const e of [...this.blasts]){this.blasts.delete(e);this.explode(e);}
     for(const e of [...this.entities.values()]) {
       if(e.fractureAt&&this.time>=e.fractureAt)this.fracture(e);
       if(e.kind==='soldier'&&e.body.position.y>WORLD.ground+100)this.hurt(e,100,'out-of-bounds');
@@ -161,7 +187,7 @@ export class SiegeWorld {
       }
       if(e.kind!=='soldier'&&(e.body.position.y>1200||e.body.position.x< -300||e.body.position.x>this.layout.width+300))this.remove(e);
     }
-    if(Math.round(this.time/STEP)%120===0)this.cleanDebris();
+    if(Math.round(this.time/STEP)%120===0)this.cleanDebris();if(this.reactionHistory.length>200)this.reactionHistory.splice(0,this.reactionHistory.length-200);
     if(this.shot) {
       const s=this.shot;s.age+=STEP;
       if(s.trail.length<220&&this.entities.has(s.entity.body.id)&&s.age%50<STEP)s.trail.push({...s.entity.body.position});
@@ -211,7 +237,16 @@ export class SiegeWorld {
   }
   place(side,piece,x,y,angle=0) {
     const check=this.placement(side,piece,x,y,angle);if(!check.valid)return false;
-    const p=check.piece; const e=this.block(side,p.material,check.x,check.y,p.w,p.h,angle,p.shape);
+    const p=check.piece;let e;
+    if(assemblyParts(p.shape)){
+      // Place a ready-made assembly as independent load-bearing timbers. The
+      // preview shares its geometry, but no invisible joint holds a roof up.
+      const probe=this.block(side,p.material,check.x,check.y,p.w,p.h,angle,p.shape);
+      const positions=probe.body.parts.slice(1).map(b=>({...b.position}));
+      this.entities.delete(probe.body.id);Composite.remove(this.engine.world,probe.body);
+      assemblyParts(p.shape).forEach(([, ,pw,ph],i)=>{const part=positions[i],item=this.block(side,p.material,part.x,part.y,pw,ph,angle,'rect',{assembly:p.id});e??=item;});
+    }
+    else e=this.block(side,p.material,check.x,check.y,p.w,p.h,angle,p.shape,{reactive:p.reactive,...(p.reactive==='fuse'?{maxHealth:24}:{})});
     this.emit('place',check.x,check.y);return e;
   }
   compressionLoad(e){

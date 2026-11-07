@@ -25,11 +25,11 @@ test('high-energy fracture conserves mass and leaves physical pieces',()=>{
  const fragments=[...w.entities.values()].filter(e=>e.fragment);assert.equal(fragments.length,2);
  assert.ok(Math.abs(fragments.reduce((a,e)=>a+e.body.mass,0)-mass)<1e-8);assert.ok(fragments.every(e=>!e.body.isStatic));assert.ok(!w.entities.has(e.body.id));w.dispose();
 });
-test('a real Breaker impact fractures wood and masonry while steel remains physical',()=>{
+test('a narrow Piercer fractures thin supports including steel',()=>{
  const outcomes={};for(const material of ['wood','stone','metal']){
   const w=empty(),t=w.block(1,material,1800,770,24,80);w.launch(0,{x:23,y:-4},'heavy');Matter.Body.setPosition(w.shot.entity.body,{x:1630,y:760});w.step(30);
   outcomes[material]=w.entities.has(t.body.id);assert.ok(w.history.some(h=>h.source==='projectile'));w.dispose();
- }assert.deepEqual(outcomes,{wood:false,stone:false,metal:true});
+ }assert.deepEqual(outcomes,{wood:false,stone:false,metal:false});
 });
 test('burst applies radial impulse and real damage, once',()=>{
  const w=empty(),e=w.block(1,'wood',1800,770,30,60);w.launch(0,{x:1,y:-1},'bomb');const bomb=w.shot.entity;Matter.Body.setPosition(bomb.body,{x:1770,y:770});

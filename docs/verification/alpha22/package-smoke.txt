@@ -1,0 +1,5 @@
+browser ZIP CRC and extraction passed
+complete ZIP CRC and extraction passed
+Complete package includes built game, source, lockfile, tests and report
+Extracted browser game serves HTML, JavaScript and CSS without npm installation
+Extracted game starts and reaches artillery through native touch taps, offline after loading; no page errors

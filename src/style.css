@@ -4,3 +4,6 @@
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 #gamebar #pause,#gamebar #ready{min-height:44px}@media(max-height:650px) and (min-width:700px){#gamebar{height:50px;min-height:50px}}
 #title{align-items:flex-start}.title-copy{margin-block:auto}#lab-actions{display:flex;gap:5px}#lab-actions button{flex:1;font-size:11px;padding:7px}
+.queue-next{align-self:center;max-width:145px;font-size:11px;color:var(--muted);padding:8px}#discard{min-width:72px}@media(max-width:650px){.queue-next{max-width:85px;font-size:9px}#discard{min-width:60px;font-size:10px}}
+
+@media(max-width:650px){#controls.build{height:116px;min-height:116px}#controls.build .pieces{display:grid;grid-template-columns:repeat(4,minmax(44px,1fr));gap:4px}#controls.build .piece{min-width:44px;min-height:48px;max-width:none;font-size:9px;padding:2px}#controls.repair .pieces{flex:0 0 80px}#controls.repair{height:76px;min-height:76px}.piece-icon{line-height:18px}}

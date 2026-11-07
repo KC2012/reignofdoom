@@ -1,7 +1,7 @@
 import{Match}from'../src/match.js';import{writeFileSync,mkdirSync}from'node:fs';
 const results=[];
-for(const scale of ['skirmish','siege','grand'])for(const seed of [17,71,1042]){
- const m=new Match({mode:'hotseat',scale,seed});let shots=0,flightSeconds=0,impactSeconds=0,shotWall=0,peak=0;
+for(const terrain of ['valley','powder','hanging'])for(const scale of ['skirmish','siege','grand'])for(const seed of [17,71,1042]){
+ const m=new Match({mode:'hotseat',scale,seed,terrain});let shots=0,flightSeconds=0,impactSeconds=0,shotWall=0,peak=0;
  for(let i=0;i<180000&&m.phase!=='over';i++){
   if(m.building){for(let n=0;n<30;n++){if(!m.cpuBuild())break;m.world.step(12);}m.ready();}
   if(m.phase==='aim'){let kind=m.ammo[m.active].heavy&&shots%3===1?'heavy':'bolt';let v=m.cpuAim(kind);if(!m.lastAimReachable){kind='bolt';v=m.cpuAim(kind);}if(m.fire(v,kind)){shots++;shotWall=0;impactSeconds=0;}}
@@ -11,6 +11,6 @@ for(const scale of ['skirmish','siege','grand'])for(const seed of [17,71,1042]){
  if(m.phase!=='over')throw new Error(`Stalled ${scale}/${seed}`);
  // Explicit Ready-time assumptions, not observed human duration.
  const repairs=Math.min(m.round-1,m.world.layout.scale.limit-1),assumedReady=40+repairs*16;
- results.push({scale,seed,shots,bombardments:Math.min(m.round,m.world.layout.scale.limit),winner:m.result.winner,survivors:m.counts(),peakBodies:peak,estimatedCombatPlaybackSeconds:flightSeconds,assumedInitialBuildSecondsPerPlayer:20,assumedRepairSecondsPerPlayer:8,estimatedTotalWithThoseReadyTimes:flightSeconds+assumedReady});m.dispose();
+ results.push({terrain,scale,seed,shots,bombardments:Math.min(m.round,m.world.layout.scale.limit),winner:m.result.winner,survivors:m.counts(),peakBodies:peak,estimatedCombatPlaybackSeconds:flightSeconds,assumedInitialBuildSecondsPerPlayer:20,assumedRepairSecondsPerPlayer:8,estimatedTotalWithThoseReadyTimes:flightSeconds+assumedReady});m.dispose();
 }
-mkdirSync('test-results/alpha21',{recursive:true});writeFileSync('test-results/alpha21/pacing-audit.json',JSON.stringify({description:'Natural fixed-step machine matches. Presentation time estimated from 1.2x travel, 1x impact and settling, and minimum .95s impact hold. Initial build/repair times are stated assumptions, not human measurement.',results},null,2));console.log(results.map(r=>({scale:r.scale,seed:r.seed,shots:r.shots,phases:r.bombardments,estimatedSeconds:Math.round(r.estimatedTotalWithThoseReadyTimes)})));
+mkdirSync('test-results/alpha22',{recursive:true});writeFileSync('test-results/alpha22/pacing-audit.json',JSON.stringify({description:'Natural fixed-step machine matches. Presentation time estimated from 1.2x travel, 1x impact and settling, and minimum .95s impact hold. Initial build/repair times are stated assumptions, not human measurement.',results},null,2));console.log(results.map(r=>({terrain:r.terrain,scale:r.scale,seed:r.seed,shots:r.shots,phases:r.bombardments,estimatedSeconds:Math.round(r.estimatedTotalWithThoseReadyTimes)})));

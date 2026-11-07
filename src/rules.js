@@ -17,11 +17,15 @@ export const PIECES = [
   { id: 'stone', name: 'Stone block', material: 'stone', w: 62, h: 36, count: 3, icon: '▥' },
   { id: 'steel', name: 'Steel slab', material: 'metal', w: 110, h: 16, count: 1, icon: '═' },
   { id: 'wedge', name: 'Cork wedge', material: 'foam', w: 70, h: 50, count: 2, icon: '◢', shape: 'wedge' },
+  { id:'frame',name:'Tower frame',material:'wood',w:130,h:150,count:1,icon:'Π',shape:'frame' },
+  { id:'platform',name:'Raised deck',material:'wood',w:150,h:70,count:1,icon:'╥',shape:'platform' },
+  { id:'volatile',name:'Powder crate',material:'wood',w:38,h:38,count:0,icon:'✳',reactive:'volatile' },
+  { id:'fuse',name:'Breakaway post',material:'wood',w:24,h:110,count:0,icon:'⋮',reactive:'fuse' },
   { id: 'brace', name: 'Timber elbow', material: 'wood', w: 72, h: 62, count: 0, icon: '┗', shape: 'brace' },
 ];
 export const AMMO = {
-  bolt: { name: 'Bolt', subtitle: 'Precise • unlimited', radius: 8, density: .009, scale: 1, damage: 6, color: '#f0e9d6' },
-  heavy: { name: 'Breaker', subtitle: 'Heavy • punches supports', radius: 12, density: .012, scale: .94, damage: 4, color: '#ffb478' },
+  bolt: { name: 'Smash', subtitle: 'Momentum • unlimited', radius: 11, density: .014, scale: 1, damage: 2.6, color: '#f0e9d6' },
+  heavy: { name: 'Piercer', subtitle: 'Penetration • support breaker', radius: 6, density: .026, scale: 1, damage: 9, color: '#ffb478' },
   bomb: { name: 'Burst', subtitle: 'Blast • clears light cover', radius: 10, density: .005, scale: .98, damage: .5, color: '#cfb0ef' },
 };
 export function random(seed) { let a = seed >>> 0; return () => { a += 0x6D2B79F5; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -32,12 +36,6 @@ export function pullVelocity(dx, dy, ammo = 'bolt') {
   return { x: -dx * ratio * .265 * AMMO[ammo].scale, y: -dy * ratio * .265 * AMMO[ammo].scale };
 }
 export function initialInventory(multiplier=1) { return Object.fromEntries(PIECES.map(p => [p.id, Math.ceil(p.count*multiplier)])); }
-export function repairInventory(rng) {
-  const inv = Object.fromEntries(PIECES.map(p => [p.id, 0]));
-  for (const id of ['beam','brick','brace','pillar']) inv[id]++;
-  for (let i=0;i<2;i++) inv[['stone','pillar','wedge'][Math.floor(rng()*3)]]++;
-  return inv;
-}
 export function resultFor(counts, round, limit = 10) {
   if (!counts[0] && !counts[1]) return { winner: -1, reason: 'Mutual destruction' };
   if (!counts[0] || !counts[1]) return { winner: counts[0] ? 0 : 1, reason: 'Last soldiers standing' };

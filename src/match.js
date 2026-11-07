@@ -1,21 +1,30 @@
+import { repairQueue } from './chaos.js';
 import { SiegeWorld } from './simulation.js';
-import { PIECES, SIDES, WORLD, AMMO, initialInventory, repairInventory, resultFor, random, clamp, solveShot, rangedShot, BALLISTICS } from './rules.js';
+import { PIECES, SIDES, WORLD, AMMO, initialInventory, resultFor, random, clamp, solveShot, rangedShot, BALLISTICS } from './rules.js';
 export class Match {
   constructor({mode='cpu',difficulty='normal',seed=1,terrain='valley',lab=false,scale='siege'}={}) {
     this.options={mode,difficulty,seed,terrain,lab,scale};this.rng=random(seed);this.world=new SiegeWorld(seed,terrain,scale);
     this.mode=mode;this.difficulty=difficulty;this.phase='build';this.active=0;this.round=1;this.volley=0;this.timer=this.world.layout.scale.build;
     this.inventories=[initialInventory(this.world.layout.scale.stock),initialInventory(this.world.layout.scale.stock)];this.ammo=[{heavy:2,bomb:2},{heavy:2,bomb:2}];
-    this.clearance=[3,3];this.soldierMoves=[1,1];this.launchOffsets=[0,0];this.result=null;this.paused=false;this.cpuClock=0;this.cpuPlacements=0;this.revision=0;
+    this.clearance=[3,3];this.soldierMoves=[1,1];this.queues=[[],[]];this.queueIndex=[0,0];this.discards=[0,0];this.launchOffsets=[0,0];this.result=null;this.paused=false;this.cpuClock=0;this.cpuPlacements=0;this.revision=0;
     this.message='Build around your three soldiers. Protect the supports.';this.lastShot=null;
   }
   isCPU(){return this.mode==='cpu'&&this.active===1;}
   get building(){return this.phase==='build'||this.phase==='repair';}
   counts(){return this.world.troops.map(t=>t.length);}
   place(id,x,y,angle=0) {
-    if(!this.building||!(this.inventories[this.active][id]>0))return false;
+    if(!this.building||(this.phase==='repair'&&id!==this.currentRepair())||!(this.inventories[this.active][id]>0))return false;
     const e=this.world.place(this.active,id,x,y,angle);
-    if(e){this.inventories[this.active][id]--;this.revision++;}return e;
+    if(e){this.inventories[this.active][id]--;if(this.phase==='repair')this.advanceRepair();this.revision++;}return e;
   }
+  currentRepair(){return this.queues[this.active][this.queueIndex[this.active]]??null;}
+  beginRepairQueue(){
+    const queue=repairQueue(this.rng);this.queues=[queue.slice(),queue.slice()];this.queueIndex=[0,0];this.discards=[0,0];
+    this.inventories=[0,1].map(()=>Object.fromEntries(PIECES.map(p=>[p.id,0])));
+    for(let side=0;side<2;side++)this.inventories[side][queue[0]]=1;
+  }
+  advanceRepair(){const side=this.active;for(const key of Object.keys(this.inventories[side]))this.inventories[side][key]=0;this.queueIndex[side]++;const next=this.currentRepair();if(next)this.inventories[side][next]=1;}
+  discardRepair(){if(this.phase!=='repair'||!this.currentRepair())return false;this.timer=Math.max(0,this.timer-2);this.discards[this.active]++;this.advanceRepair();this.revision++;return true;}
   ready() {
     if(!this.building)return false;
     this.world.step(30);
@@ -41,9 +50,9 @@ export class Match {
       this.round++;this.result=resultFor(this.counts(),this.round,this.world.layout.scale.limit);
       if(this.result){this.phase='over';this.revision++;return;}
       this.phase='repair';this.active=0;this.timer=this.world.layout.scale.repair;
-      this.inventories=[repairInventory(this.rng),repairInventory(this.rng)];this.clearance=[3,3];this.soldierMoves=[1,1];
+      this.beginRepairQueue();this.clearance=[3,3];this.soldierMoves=[1,1];
       for(const a of this.ammo){const kind=this.round%2===0?'heavy':'bomb';a[kind]=Math.min(3,a[kind]+1);}
-      this.message='Six fresh pieces. Patch a gap or catch falling debris.';
+      this.message='Place the current piece or skip for two seconds. Watch what comes next.';
     } else {this.active=1-this.active;this.phase='aim';this.timer=35;}
     this.cpuClock=0;this.revision++;
   }
@@ -56,6 +65,7 @@ export class Match {
     }).sort((a,b)=>a.score-b.score);
     const chosen=assessed[0];
     let target=chosen?{...(chosen.roof??chosen.soldier).body.position}:{x:world.sides[enemy].center,y:780};
+    const opportunity=[...world.entities.values()].find(e=>e.side===enemy&&(e.reactive==='volatile'||e.reactive==='fuse'));if(opportunity&&this.rng()<.35)target={...opportunity.body.position};
     const error=this.difficulty==='easy'?65:this.difficulty==='hard'?10:28;
     target.x+=(this.rng()-.5)*error*2;
     const s=world.sides[this.active],origin={x:s.launcher[0]+this.launchOffsets[this.active],y:s.launcher[1]-20};
@@ -74,10 +84,14 @@ export class Match {
   cpuBuild() {
     const side=this.active,c=this.world.sides[side].center,inv=this.inventories[side];
     if(this.phase==='build') {
+      this.elevated??={};
+      if(!this.elevated[side]){const floor=[...this.world.entities.values()].find(e=>e.side===side&&e.assembly&&e.w>100&&Math.abs(e.body.angle)<.1&&e.body.position.y<this.world.foundation(side)-140);if(floor){const soldier=this.world.troops[side][0];if(soldier&&this.moveSoldier(soldier,floor.body.position.x,floor.body.bounds.min.y-14)){this.elevated[side]=true;return true;}}}
       this.plans??={};
       if(!this.plans[side]) {
         const front=side===0?1:-1,fx=c+front*(250+Math.floor(this.rng()*25)),bx=c-front*260,g=this.world.foundation(side);
         this.plans[side]=[
+          {id:'frame',x:c-front*150,y:g-240},
+          {id:'platform',x:c+front*150,y:g-220},
           ...[0,1,2].map(i=>({id:'stone',x:fx,y:g-18-i*37})),
           {id:'steel',x:fx,y:g-3*37-9},
           {id:'beam',x:c+front*360,y:g-76,angle:Math.PI/2},
@@ -98,29 +112,11 @@ export class Match {
       }
       return false;
     }
-    // Repairs reinforce exposed flanks rather than stacking heavy loads over troops.
-    // The same stock, bounds and overlap rules apply to CPU.
-    for(const soldier of this.world.troops[side]){
-      const x=soldier.body.position.x,roofY=soldier.body.position.y-55;
-      const covered=[...this.world.entities.values()].some(e=>e.kind==='block'&&Math.abs(e.body.position.x-x)<65&&e.body.position.y<soldier.body.position.y&&e.body.position.y>soldier.body.position.y-130);
-      if(!covered&&inv.pillar>0)for(const sign of [-1,1])if(this.place('pillar',x+sign*65,this.world.foundation(side)-43))return true;
-      if(!covered&&inv.beam>0){const p=this.world.placement(side,'beam',x,roofY);const bottom=Math.max(...p.vertices.flat().map(v=>v.y));if(p.valid&&[...this.world.entities.values()].some(e=>e.kind==='block'&&Math.abs(e.body.bounds.min.y-bottom)<20&&Math.abs(e.body.position.x-x)<80)&&this.place('beam',x,p.y))return true;}
-    }
-    const choices=PIECES.filter(p=>inv[p.id]>0).sort(()=>this.rng()-.5);
-    for(const p of choices) {
-      const front=side===0?1:-1;
-      const xs=[c+front*270,c-front*270,c+front*360,c-front*360];
-      if(this.rng()<.5)xs.reverse();
-      for(const x of xs) {
-        for(let y=WORLD.ground-p.h/2;y>WORLD.ground-this.world.layout.buildHeight;y-=p.h+2) {
-          const check=this.world.placement(side,p,x,y,0);
-          if(!check.valid)continue;
-          // Require ground or an actual nearby support, rather than dropping floating pieces.
-          const bottom=Math.max(...check.vertices.flat().map(v=>v.y));
-          const support=bottom>WORLD.ground-4||[...this.world.entities.values()].some(e=>e.kind==='block'&&Math.abs(e.body.bounds.min.y-bottom)<16&&e.body.bounds.max.x>check.x-p.w/2+5&&e.body.bounds.min.x<check.x+p.w/2-5);
-          if(support&&this.place(p.id,check.x,check.y,0))return true;
-        }
-      }
+    if(this.phase==='repair'){
+      const id=this.currentRepair();if(!id)return false;const p=PIECES.find(p=>p.id===id),g=this.world.foundation(side);
+      const xs=id==='volatile'?[c+this.world.sides[side].direction*260,c-this.world.sides[side].direction*260]:[c-230,c+230,c,c-100,c+100];
+      for(const angle of [0,Math.PI/2])for(const x of xs)for(let y=g-p.h/2;y>g-300;y-=20){const check=this.world.placement(side,p,x,y,angle);if(!check.valid)continue;const bottom=Math.max(...check.vertices.flat().map(v=>v.y));const supported=bottom>g-5||[...this.world.entities.values()].some(e=>e.kind==='block'&&Math.abs(e.body.bounds.min.y-bottom)<14&&e.body.bounds.max.x>x-p.w/3&&e.body.bounds.min.x<x+p.w/3);if(supported&&this.place(id,x,y,angle))return true;}
+      this.discardRepair();return !!this.currentRepair();
     }
     return false;
   }
@@ -147,5 +143,5 @@ export class Match {
     }
   }
   dispose(){this.world.dispose();}
-  snapshot(){return {phase:this.phase,active:this.active,round:this.round,volley:this.volley,timer:this.timer,counts:this.counts(),result:this.result,bodies:this.world.entities.size,ammo:structuredClone(this.ammo),inventory:{...this.inventories[this.active]},history:this.world.history.slice(-20),scale:this.options.scale,clearance:this.clearance[this.active],soldierMoves:this.soldierMoves[this.active]};}
+  snapshot(){return {phase:this.phase,active:this.active,round:this.round,volley:this.volley,timer:this.timer,counts:this.counts(),result:this.result,bodies:this.world.entities.size,ammo:structuredClone(this.ammo),inventory:{...this.inventories[this.active]},repairQueue:this.queues[this.active].slice(this.queueIndex[this.active]),discards:this.discards[this.active],history:this.world.history.slice(-20),scale:this.options.scale,clearance:this.clearance[this.active],soldierMoves:this.soldierMoves[this.active]};}
 }

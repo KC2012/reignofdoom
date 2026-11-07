@@ -1,6 +1,6 @@
 // Safari-family engine probe. This never claims to verify actual iPad hardware.
 import{webkit}from'playwright';import{existsSync}from'node:fs';import{mkdir,writeFile}from'node:fs/promises';import{spawn}from'node:child_process';import assert from'node:assert/strict';
-const out='test-results/alpha21';await mkdir(out,{recursive:true});const report={engine:'Playwright WebKit',actualIPadHardware:false,status:'not_run',checks:[],limitations:['Desktop WebKit with tablet emulation is not iOS Safari or actual iPad hardware.','Pointer drags in this probe are synthetic; native multi-touch is covered separately in Chromium only.']};let server,browser;
+const out='test-results/alpha22';await mkdir(out,{recursive:true});const report={engine:'Playwright WebKit',actualIPadHardware:false,status:'not_run',checks:[],limitations:['Desktop WebKit with tablet emulation is not iOS Safari or actual iPad hardware.','Pointer drags in this probe are synthetic; native multi-touch is covered separately in Chromium only.']};let server,browser;
 try{
  if(!existsSync(webkit.executablePath()))throw new Error('Pinned WebKit engine unavailable. Its install attempt was blocked by HTTP 403 Domain forbidden at cdn.playwright.dev / playwright.download.prss.microsoft.com.');
  server=spawn(process.execPath,['node_modules/vite/bin/vite.js','preview','--host','127.0.0.1','--port','4174','--strictPort'],{stdio:'ignore'});let ready=false;for(let n=0;n<60;n++){try{ready=(await fetch('http://127.0.0.1:4174')).ok;if(ready)break;}catch{}await new Promise(r=>setTimeout(r,80));}assert.ok(ready);

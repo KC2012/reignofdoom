@@ -4,8 +4,8 @@ import zipfile, hashlib
 root=Path(__file__).resolve().parent.parent
 out=root/'downloads';out.mkdir(exist_ok=True)
 if not (root/'dist/index.html').is_file():raise SystemExit('Run npm run build first.')
-name='reign-of-doom-alpha21'
-readme="""REIGN OF DOOM / ALPHA 2.1 — MOBILE-FIRST ARCADE RECOVERY
+name='reign-of-doom-alpha22'
+readme="""REIGN OF DOOM / ALPHA 2.2 — CHAOS ENGINE
 
 Run: node scripts/serve.mjs
 Open the local address printed by the server. Node 24 recommended.

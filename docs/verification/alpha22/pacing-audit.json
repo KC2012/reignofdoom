@@ -1,0 +1,464 @@
+{
+  "description": "Natural fixed-step machine matches. Presentation time estimated from 1.2x travel, 1x impact and settling, and minimum .95s impact hold. Initial build/repair times are stated assumptions, not human measurement.",
+  "results": [
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 14,
+      "bombardments": 3,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 102,
+      "estimatedCombatPlaybackSeconds": 65.28055555555116,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 137.28055555555116
+    },
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 12,
+      "bombardments": 2,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 82,
+      "estimatedCombatPlaybackSeconds": 64.48055555555183,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 120.48055555555183
+    },
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 11,
+      "bombardments": 2,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 81,
+      "estimatedCombatPlaybackSeconds": 57.713888888885506,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 113.7138888888855
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": 0,
+      "survivors": [
+        2,
+        1
+      ],
+      "peakBodies": 223,
+      "estimatedCombatPlaybackSeconds": 216.28888888888966,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 368.2888888888897
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 13,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 115,
+      "estimatedCombatPlaybackSeconds": 66.60277777777269,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 138.6027777777727
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 88,
+      "estimatedCombatPlaybackSeconds": 37.0861111111107,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 93.0861111111107
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 17,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 126,
+      "estimatedCombatPlaybackSeconds": 91.73888888887994,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 163.73888888887996
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 11,
+      "bombardments": 2,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 96,
+      "estimatedCombatPlaybackSeconds": 63.95555555555142,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 119.95555555555143
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 6,
+      "bombardments": 1,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 69,
+      "estimatedCombatPlaybackSeconds": 39.37777777777693,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 79.37777777777693
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 8,
+      "bombardments": 2,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 81,
+      "estimatedCombatPlaybackSeconds": 34.91111111111111,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 90.91111111111111
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 36,
+      "bombardments": 6,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 171,
+      "estimatedCombatPlaybackSeconds": 169.91388888888972,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 289.9138888888897
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 117,
+      "estimatedCombatPlaybackSeconds": 90.24722222221423,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 178.24722222221425
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 24,
+      "bombardments": 4,
+      "winner": 1,
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 141,
+      "estimatedCombatPlaybackSeconds": 109.21388888887769,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 197.2138888888777
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": -1,
+      "survivors": [
+        1,
+        1
+      ],
+      "peakBodies": 231,
+      "estimatedCombatPlaybackSeconds": 234.7333333333493,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 386.73333333334926
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 4,
+      "bombardments": 1,
+      "winner": 1,
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 67,
+      "estimatedCombatPlaybackSeconds": 24.036111111111218,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 64.03611111111121
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 90,
+      "estimatedCombatPlaybackSeconds": 39.791666666665954,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 95.79166666666595
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 15,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 116,
+      "estimatedCombatPlaybackSeconds": 78.4499999999932,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 150.4499999999932
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 4,
+      "bombardments": 1,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 67,
+      "estimatedCombatPlaybackSeconds": 28.76944444444431,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 68.7694444444443
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 30,
+      "bombardments": 5,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 146,
+      "estimatedCombatPlaybackSeconds": 126.20833333332016,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 230.20833333332016
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": 1,
+      "survivors": [
+        1,
+        2
+      ],
+      "peakBodies": 220,
+      "estimatedCombatPlaybackSeconds": 208.3500000000081,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 360.3500000000081
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 13,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 92,
+      "estimatedCombatPlaybackSeconds": 64.65833333332951,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 136.6583333333295
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": 1,
+      "survivors": [
+        1,
+        2
+      ],
+      "peakBodies": 219,
+      "estimatedCombatPlaybackSeconds": 234.89444444446033,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 386.8944444444603
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 23,
+      "bombardments": 4,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 125,
+      "estimatedCombatPlaybackSeconds": 107.04166666665529,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 195.0416666666553
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 24,
+      "bombardments": 4,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 123,
+      "estimatedCombatPlaybackSeconds": 124.3222222222094,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 212.3222222222094
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 18,
+      "bombardments": 3,
+      "winner": 1,
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 121,
+      "estimatedCombatPlaybackSeconds": 94.96388888887915,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 166.96388888887915
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 14,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 111,
+      "estimatedCombatPlaybackSeconds": 83.68611111110424,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 155.68611111110425
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 16,
+      "bombardments": 3,
+      "winner": 0,
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 112,
+      "estimatedCombatPlaybackSeconds": 93.62499999999075,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 165.62499999999073
+    }
+  ]
+}

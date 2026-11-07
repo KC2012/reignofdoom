@@ -5,7 +5,9 @@ export const SCALES = {
   grand: { name:'Grand Siege · experimental', width:6400, zone:1300, height:720, stock:2, build:90, repair:40, limit:10 },
 };
 export const FIELDS = {
-  valley:{name:'Lowlands',description:'Open foundations. Room for layered walls.'},
+  powder:{name:'Powder Yard',description:'Mirrored powder crates: risky cover and visible chain targets.'},
+  hanging:{name:'Hanging Works',description:'Roped weights depend on breakaway posts.'},
+  valley:{name:'The Flats',description:'Open foundations. Room for layered walls.'},
   ridge:{name:'The Divide',description:'A central ridge catches low shots.'},
   steps:{name:'Terraces',description:'Raised mirrored shelves expand your foundations.'},
   ravine:{name:'The Chasm',description:'A deep central void. Keep your troops on home ground.'},

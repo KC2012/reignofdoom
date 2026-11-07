@@ -13,11 +13,11 @@ test('turn ownership, direction and special ammo stock are enforced',()=>{
 test('six missed shots lead to short repairs, supply and alternate opening side',()=>{
  const m=aim();for(let i=0;i<6;i++){assert.ok(m.fire({x:(m.active? -1:1)*3.5,y:-20}));finishFlight(m);}
  assert.equal(m.phase,'repair');assert.equal(m.round,2);assert.equal(m.timer,30);assert.equal(m.active,0);
- assert.equal(Object.values(m.inventories[0]).reduce((a,b)=>a+b),6);m.ready();m.ready();assert.equal(m.phase,'aim');assert.equal(m.active,1);m.dispose();
+ assert.equal(Object.values(m.inventories[0]).reduce((a,b)=>a+b),1);assert.equal(m.queues[0].length,6);m.ready();m.ready();assert.equal(m.phase,'aim');assert.equal(m.active,1);m.dispose();
 });
 test('victory resolves after physical consequences and can be rematched cleanly',()=>{
  const m=aim();for(const e of [...m.world.troops[1]])m.world.hurt(e,100,'test');assert.ok(m.fire({x:4,y:-20}));finishFlight(m);
- assert.equal(m.phase,'over');assert.equal(m.result.winner,0);m.dispose();const fresh=new Match();assert.deepEqual(fresh.counts(),[3,3]);assert.equal(fresh.world.entities.size,42);fresh.dispose();
+ assert.equal(m.phase,'over');assert.equal(m.result.winner,0);m.dispose();const fresh=new Match();assert.deepEqual(fresh.counts(),[3,3]);assert.equal(fresh.world.entities.size,28);fresh.dispose();
 });
 test('CPU constructs legally with finite stock and fires without user help',()=>{
  const m=new Match({mode:'cpu',seed:1042});m.ready();let i=0;while(m.phase==='build'&&i++<800)m.tick(1/60);

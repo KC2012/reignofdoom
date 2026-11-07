@@ -1,0 +1,11 @@
+{
+  "engine": "Playwright WebKit",
+  "actualIPadHardware": false,
+  "status": "not_run",
+  "checks": [],
+  "limitations": [
+    "Desktop WebKit with tablet emulation is not iOS Safari or actual iPad hardware.",
+    "Pointer drags in this probe are synthetic; native multi-touch is covered separately in Chromium only."
+  ],
+  "reason": "Pinned WebKit engine unavailable. Its install attempt was blocked by HTTP 403 Domain forbidden at cdn.playwright.dev / playwright.download.prss.microsoft.com."
+}

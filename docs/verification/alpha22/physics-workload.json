@@ -1,0 +1,36 @@
+{
+  "runtime": "v24.22.1",
+  "hardware": "Cloud CPU; no rendering, touch or iPad thermal/GPU measurement",
+  "results": [
+    {
+      "terrain": "valley",
+      "simulatedSeconds": 15,
+      "peakBodies": 152,
+      "finalBodies": 109,
+      "cleanupCount": 43,
+      "medianPhysicsStepMs": 0.6048220000000128,
+      "p95PhysicsStepMs": 1.7056240000000003,
+      "maxPhysicsStepMs": 31.586422000000084
+    },
+    {
+      "terrain": "powder",
+      "simulatedSeconds": 15,
+      "peakBodies": 154,
+      "finalBodies": 117,
+      "cleanupCount": 37,
+      "medianPhysicsStepMs": 0.5367210000001705,
+      "p95PhysicsStepMs": 1.032741999999871,
+      "maxPhysicsStepMs": 17.68013700000006
+    },
+    {
+      "terrain": "hanging",
+      "simulatedSeconds": 15,
+      "peakBodies": 156,
+      "finalBodies": 124,
+      "cleanupCount": 31,
+      "medianPhysicsStepMs": 0.5936649999998735,
+      "p95PhysicsStepMs": 1.019313000000011,
+      "maxPhysicsStepMs": 16.02730600000018
+    }
+  ]
+}

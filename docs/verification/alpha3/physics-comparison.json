@@ -1,0 +1,533 @@
+{
+  "method": "Same three independent rooms, launch position and velocity, 240 steps after each of three shots. Alpha 2.2 uses its preserved source snapshot. Damage, fracture, displacement and survivors are separate metrics; no fun score.",
+  "results": [
+    {
+      "revision": "uncushioned",
+      "fixture": "tower",
+      "profile": "alpha22",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.07220114305555557,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 143.2874196386113,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 147.91612482197007,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 7,
+          "intactDisplaced": 7,
+          "fractured": 2,
+          "meanIntactDisplacement": 143.33533252897615,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "tower",
+      "profile": "large",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.09470875694444447,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 152.27299135967095,
+          "soldiers": 0
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 204.25241830361483,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 204.7975466293626,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "tower",
+      "profile": "cartoon",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.02816806805555561,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 149.6892599129905,
+          "soldiers": 0
+        },
+        {
+          "shot": 2,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 149.55074225006015,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 149.8339843239471,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "tower",
+      "profile": "hybrid",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.04289881111111116,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 149.469345765842,
+          "soldiers": 0
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 202.19454014887168,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 206.4997389288965,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "bunker",
+      "profile": "alpha22",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.03557495138888882,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 11,
+          "intactDisplaced": 2,
+          "fractured": 1,
+          "meanIntactDisplacement": 15.969911012285502,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 17.710663831626658,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 18.409143975679736,
+          "soldiers": 2
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "bunker",
+      "profile": "large",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.04037590277777778,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 11,
+          "intactDisplaced": 11,
+          "fractured": 1,
+          "meanIntactDisplacement": 92.39257022662291,
+          "soldiers": 0
+        },
+        {
+          "shot": 2,
+          "intact": 11,
+          "intactDisplaced": 11,
+          "fractured": 1,
+          "meanIntactDisplacement": 96.5587777026436,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 11,
+          "intactDisplaced": 11,
+          "fractured": 1,
+          "meanIntactDisplacement": 97.05037605303802,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "bunker",
+      "profile": "cartoon",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.0588106513888887,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 11,
+          "intactDisplaced": 7,
+          "fractured": 1,
+          "meanIntactDisplacement": 44.72837237314228,
+          "soldiers": 1
+        },
+        {
+          "shot": 2,
+          "intact": 11,
+          "intactDisplaced": 7,
+          "fractured": 1,
+          "meanIntactDisplacement": 45.873854167972134,
+          "soldiers": 1
+        },
+        {
+          "shot": 3,
+          "intact": 11,
+          "intactDisplaced": 7,
+          "fractured": 1,
+          "meanIntactDisplacement": 45.93854968931719,
+          "soldiers": 1
+        }
+      ]
+    },
+    {
+      "revision": "uncushioned",
+      "fixture": "bunker",
+      "profile": "hybrid",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.047852694444444586,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 101.33393451890691,
+          "soldiers": 0
+        },
+        {
+          "shot": 2,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 102.78644203167,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 113.46826253550644,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "tower",
+      "profile": "alpha22",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.03598134027777762,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 143.2874196386113,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 147.91612482197007,
+          "soldiers": 0
+        },
+        {
+          "shot": 3,
+          "intact": 7,
+          "intactDisplaced": 7,
+          "fractured": 2,
+          "meanIntactDisplacement": 143.33533252897615,
+          "soldiers": 0
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "tower",
+      "profile": "large",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.053110786111111155,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 150.44002281685516,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 154.80058637765705,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 188.2515734630925,
+          "soldiers": 2
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "tower",
+      "profile": "cartoon",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.03349799305555558,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 154.80409674289245,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 151.77176382689188,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 9,
+          "intactDisplaced": 9,
+          "fractured": 0,
+          "meanIntactDisplacement": 150.80641881038528,
+          "soldiers": 2
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "tower",
+      "profile": "hybrid",
+      "originalBlocks": 9,
+      "physicsMsPerStep": 0.052751680555555756,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 157.07372517005953,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 199.12401769177924,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 8,
+          "intactDisplaced": 8,
+          "fractured": 1,
+          "meanIntactDisplacement": 200.43141987949755,
+          "soldiers": 2
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "bunker",
+      "profile": "alpha22",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.03233339722222218,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 11,
+          "intactDisplaced": 2,
+          "fractured": 1,
+          "meanIntactDisplacement": 15.969911012285502,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 17.710663831626658,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 18.409143975679736,
+          "soldiers": 2
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "bunker",
+      "profile": "large",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.05415043333333342,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 95.1641831616731,
+          "soldiers": 3
+        },
+        {
+          "shot": 2,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 95.74686199846936,
+          "soldiers": 3
+        },
+        {
+          "shot": 3,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 95.71756692156357,
+          "soldiers": 3
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "bunker",
+      "profile": "cartoon",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.03684061944444434,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 27.208211157643674,
+          "soldiers": 3
+        },
+        {
+          "shot": 2,
+          "intact": 11,
+          "intactDisplaced": 3,
+          "fractured": 1,
+          "meanIntactDisplacement": 30.003655678736365,
+          "soldiers": 3
+        },
+        {
+          "shot": 3,
+          "intact": 11,
+          "intactDisplaced": 5,
+          "fractured": 1,
+          "meanIntactDisplacement": 33.314180496186715,
+          "soldiers": 3
+        }
+      ]
+    },
+    {
+      "revision": "refined",
+      "fixture": "bunker",
+      "profile": "hybrid",
+      "originalBlocks": 12,
+      "physicsMsPerStep": 0.05013826666666669,
+      "perShot": [
+        {
+          "shot": 1,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 93.53454264344957,
+          "soldiers": 2
+        },
+        {
+          "shot": 2,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 96.52676514125741,
+          "soldiers": 2
+        },
+        {
+          "shot": 3,
+          "intact": 10,
+          "intactDisplaced": 10,
+          "fractured": 2,
+          "meanIntactDisplacement": 97.04695162618857,
+          "soldiers": 2
+        }
+      ]
+    }
+  ]
+}

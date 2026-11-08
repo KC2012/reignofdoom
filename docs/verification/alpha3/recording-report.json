@@ -1,0 +1,188 @@
+{
+  "actualIPadHardware": false,
+  "input": "Trusted CDP touch. Repeatable toy-lab rigs; solver chooses pull vectors. No impacts or explosions injected.",
+  "audio": "Silent browser video; in-game synthesized sound is not captured.",
+  "shots": [
+    {
+      "rig": "tower",
+      "ammo": "bolt",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "smash-impulse"
+      ],
+      "chaos": {
+        "meter": [
+          24,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 24,
+          "award": null,
+          "meter": 24,
+          "round": 1
+        },
+        "target": 40
+      }
+    },
+    {
+      "rig": "tower",
+      "ammo": "heavy",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "penetration"
+      ],
+      "chaos": {
+        "meter": [
+          12,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 12,
+          "award": null,
+          "meter": 12,
+          "round": 1
+        },
+        "target": 40
+      }
+    },
+    {
+      "rig": "tower",
+      "ammo": "bomb",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "explosion"
+      ],
+      "chaos": {
+        "meter": [
+          3,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 3,
+          "award": null,
+          "meter": 3,
+          "round": 1
+        },
+        "target": 40
+      }
+    },
+    {
+      "rig": "tower",
+      "ammo": "fire",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "ignition",
+        "ignition",
+        "fire-impact",
+        "ignition"
+      ],
+      "chaos": {
+        "meter": [
+          19,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 19,
+          "award": null,
+          "meter": 19,
+          "round": 1
+        },
+        "target": 40
+      }
+    },
+    {
+      "rig": "tower",
+      "ammo": "vortex",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "vortex"
+      ],
+      "chaos": {
+        "meter": [
+          28,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 28,
+          "award": null,
+          "meter": 28,
+          "round": 1
+        },
+        "target": 40
+      }
+    },
+    {
+      "rig": "chain",
+      "ammo": "heavy",
+      "counts": [
+        3,
+        3
+      ],
+      "reactions": [
+        "support-break",
+        "rope-release",
+        "explosion",
+        "spring-release"
+      ],
+      "chaos": {
+        "meter": [
+          28,
+          0
+        ],
+        "earned": [
+          0,
+          0
+        ],
+        "last": {
+          "side": 0,
+          "points": 28,
+          "award": null,
+          "meter": 28,
+          "round": 1
+        },
+        "target": 40
+      }
+    }
+  ],
+  "errors": []
+}

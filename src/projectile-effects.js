@@ -3,6 +3,16 @@ import { AMMO, STEP, clamp } from './rules.js';
 const { Body, Sleeping }=Matter;
 const combustible=e=>e?.kind==='block'&&(e.material==='wood'||e.material==='foam');
 const gap=(a,b)=>Math.hypot(Math.max(0,a.min.x-b.max.x,b.min.x-a.max.x),Math.max(0,a.min.y-b.max.y,b.min.y-a.max.y));
+// Bounds reject distant pairs; actual edges prevent heat jumping through the
+// empty corners of a rotated beam's bounding box.
+function bodyNear(a,b,margin){
+ if(gap(a.bounds,b.bounds)>margin)return false;
+ if(Matter.Query.collides(a,[b]).length)return true;
+ const parts=body=>body.parts.length>1?body.parts.slice(1):[body];
+ const near=(p,v,u)=>{const dx=u.x-v.x,dy=u.y-v.y,t=clamp(((p.x-v.x)*dx+(p.y-v.y)*dy)/(dx*dx+dy*dy||1),0,1);return (p.x-v.x-t*dx)**2+(p.y-v.y-t*dy)**2<=margin*margin;};
+ for(const pa of parts(a))for(const pb of parts(b))for(const [vertices,edges]of [[pa.vertices,pb.vertices],[pb.vertices,pa.vertices]])for(const p of vertices)for(let i=0;i<edges.length;i++)if(near(p,edges[i],edges[(i+1)%edges.length]))return true;
+ return false;
+}
 /** Contact queues keep world mutations outside Matter's collision solver. */
 export class ProjectileEffects {
  constructor(world){this.world=world;this.pending=new Map();this.springs=new Map();this.fields=[];}
@@ -41,7 +51,7 @@ export class ProjectileEffects {
   for(const {spring,target,closing}of this.springs.values()){
    if(spring.spent)continue;
    spring.spent=true;
-   const targets=[...w.entities.values()].filter(e=>!e.body.isStatic&&e!==spring&&(e===target||gap(spring.body.bounds,e.body.bounds)<4)).slice(0,8);
+   const targets=[...w.entities.values()].filter(e=>!e.body.isStatic&&e!==spring&&(e===target||bodyNear(spring.body,e.body,4))).slice(0,8);
    const mass=targets.reduce((sum,e)=>sum+e.body.mass,0),kick=Math.min(10,4+closing*.6)*Math.min(1,Math.sqrt(18/Math.max(1,mass))),direction=spring.throwDirection??0;
    for(const e of targets){Sleeping.set(e.body,false);Body.setVelocity(e.body,{x:e.body.velocity.x+direction*kick*.55,y:Math.min(e.body.velocity.y,-kick)});}
    if(!spring.body.isStatic&&w.entities.has(spring.body.id)){Sleeping.set(spring.body,false);Body.setVelocity(spring.body,{x:spring.body.velocity.x-direction*kick*.2,y:spring.body.velocity.y+kick*.25});}
@@ -66,8 +76,8 @@ export class ProjectileEffects {
   for(const e of burning){
    if(!w.entities.has(e.body.id))continue;
    w.hurt(e,(e.material==='foam'?24:18)*dt,'fire');
-   for(const soldier of troops)if(gap(e.body.bounds,soldier.body.bounds)<10)w.hurt(soldier,3*dt,'fire');
-   if(w.time>=e.spreadAt){e.spreadAt=w.time+650;for(const other of w.entities.values())if(other!==e&&combustible(other)&&gap(e.body.bounds,other.body.bounds)<6)this.ignite(other,e.burnOwner,Math.min(w.time+2800,e.burnUntil+900));}
+   for(const soldier of troops)if(bodyNear(e.body,soldier.body,10))w.hurt(soldier,3*dt,'fire');
+   if(w.time>=e.spreadAt){e.spreadAt=w.time+650;for(const other of w.entities.values())if(other!==e&&combustible(other)&&bodyNear(e.body,other.body,6))this.ignite(other,e.burnOwner,Math.min(w.time+2800,e.burnUntil+900));}
   }
  }
  get busy(){return this.pending.size>0||this.fields.length>0||[...this.world.entities.values()].some(e=>e.burnUntil>this.world.time);}

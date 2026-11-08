@@ -54,3 +54,6 @@ test('Vortex produces broad visible lift across separate loose timber pieces',()
 test('Every toy-lab rig remains stable until a player acts',async()=>{
  const {loadRig}=await import('../src/laboratory.js');for(const kind of['tower','bunker','chain']){const m=new Match({mode:'hotseat',scale:'skirmish',seed:1042});loadRig(m,kind);m.world.step(600);assert.deepEqual(m.counts(),[3,3]);assert.ok(m.world.troops.flat().every(t=>t.health===t.maxHealth));assert.equal(m.world.reactionHistory.length,0);m.dispose();}
 });
+test('Fire cannot jump across the empty bounds of an angled beam',()=>{
+ const w=empty(),beam=w.block(1,'wood',2000,700,200,10,Math.PI/4),other=w.block(1,'wood',1940,755,20,20);Matter.Body.setStatic(beam.body,true);Matter.Body.setStatic(other.body,true);w.effects.ignite(beam,0);w.step(60);assert.ok(!other.burnUntil);w.dispose();
+});

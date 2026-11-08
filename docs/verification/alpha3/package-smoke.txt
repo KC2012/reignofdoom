@@ -1,0 +1,5 @@
+browser ZIP CRC and extraction passed
+complete ZIP CRC and extraction passed
+Complete package includes built game, source, lockfile, tests and report
+Extracted browser game serves HTML, JavaScript and CSS without npm installation
+Extracted game starts, exposes all five shots and fires Vortex through native touch while offline after loading; no page errors

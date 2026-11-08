@@ -1,0 +1,1049 @@
+{
+  "description": "Natural fixed-step machine matches. Presentation time estimated from 1.2x travel, 1x impact and settling, and minimum .95s impact hold. Initial build/repair times are stated assumptions, not human measurement.",
+  "results": [
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 13,
+      "bombardments": 3,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 7,
+        "heavy": 2,
+        "bomb": 1,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        2,
+        1
+      ],
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 160,
+      "estimatedCombatPlaybackSeconds": 82.46388888888279,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 154.4638888888828
+    },
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 2,
+        "heavy": 2,
+        "bomb": 2,
+        "fire": 1,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        0,
+        1
+      ],
+      "survivors": [
+        0,
+        3
+      ],
+      "peakBodies": 124,
+      "estimatedCombatPlaybackSeconds": 34.072222222222145,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 90.07222222222214
+    },
+    {
+      "terrain": "valley",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 20,
+      "bombardments": 4,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 6,
+        "heavy": 4,
+        "bomb": 3,
+        "fire": 2,
+        "vortex": 5
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 146,
+      "estimatedCombatPlaybackSeconds": 132.7777777777703,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 220.7777777777703
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 15,
+      "bombardments": 3,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 8,
+        "heavy": 2,
+        "bomb": 1,
+        "fire": 3,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 223,
+      "estimatedCombatPlaybackSeconds": 100.29444444443618,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 172.29444444443618
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 2,
+        "heavy": 2,
+        "bomb": 2,
+        "fire": 1,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        1,
+        1
+      ],
+      "survivors": [
+        0,
+        3
+      ],
+      "peakBodies": 124,
+      "estimatedCombatPlaybackSeconds": 40.19999999999931,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 96.1999999999993
+    },
+    {
+      "terrain": "valley",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 18,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 5,
+        "heavy": 3,
+        "bomb": 4,
+        "fire": 2,
+        "vortex": 4
+      },
+      "chaosAwards": [
+        2,
+        3
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 183,
+      "estimatedCombatPlaybackSeconds": 125.60555555554468,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 213.6055555555447
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 29,
+      "bombardments": 5,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 15,
+        "heavy": 4,
+        "bomb": 3,
+        "fire": 5,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        4,
+        5
+      ],
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 209,
+      "estimatedCombatPlaybackSeconds": 201.34444444445785,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 305.34444444445785
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 22,
+      "bombardments": 4,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 5,
+        "heavy": 4,
+        "bomb": 5,
+        "fire": 6,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        4,
+        4
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 229,
+      "estimatedCombatPlaybackSeconds": 162.60555555555877,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 250.60555555555877
+    },
+    {
+      "terrain": "valley",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 13,
+      "bombardments": 3,
+      "winner": -1,
+      "reason": "Mutual destruction",
+      "ammoUsed": {
+        "bolt": 4,
+        "heavy": 1,
+        "bomb": 3,
+        "fire": 2,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        0,
+        0
+      ],
+      "peakBodies": 127,
+      "estimatedCombatPlaybackSeconds": 99.89444444443579,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 171.8944444444358
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 10,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 6,
+        "heavy": 0,
+        "bomb": 1,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 78,
+      "estimatedCombatPlaybackSeconds": 56.38333333333041,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 112.38333333333041
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 9,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 4,
+        "heavy": 1,
+        "bomb": 2,
+        "fire": 2,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        2,
+        1
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 105,
+      "estimatedCombatPlaybackSeconds": 55.922222222219276,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 111.92222222221928
+    },
+    {
+      "terrain": "powder",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 15,
+      "bombardments": 3,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 6,
+        "heavy": 2,
+        "bomb": 2,
+        "fire": 2,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 104,
+      "estimatedCombatPlaybackSeconds": 86.86944444443746,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 158.86944444443748
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 10,
+        "heavy": 4,
+        "bomb": 2,
+        "fire": 1,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 159,
+      "estimatedCombatPlaybackSeconds": 103.79166666665678,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 191.7916666666568
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 31,
+      "bombardments": 6,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 12,
+        "heavy": 4,
+        "bomb": 6,
+        "fire": 6,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        5,
+        5
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 257,
+      "estimatedCombatPlaybackSeconds": 194.0083333333451,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 314.0083333333451
+    },
+    {
+      "terrain": "powder",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 12,
+      "bombardments": 3,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 5,
+        "heavy": 1,
+        "bomb": 1,
+        "fire": 2,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        0,
+        3
+      ],
+      "peakBodies": 98,
+      "estimatedCombatPlaybackSeconds": 76.29166666666104,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 148.29166666666106
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 4,
+      "bombardments": 1,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 3,
+        "heavy": 0,
+        "bomb": 1,
+        "fire": 0,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        1,
+        0
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 63,
+      "estimatedCombatPlaybackSeconds": 27.24444444444449,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 67.2444444444445
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 7,
+        "heavy": 3,
+        "bomb": 5,
+        "fire": 3,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 231,
+      "estimatedCombatPlaybackSeconds": 156.77500000000072,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 244.77500000000072
+    },
+    {
+      "terrain": "powder",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 30,
+      "bombardments": 5,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 12,
+        "heavy": 5,
+        "bomb": 3,
+        "fire": 3,
+        "vortex": 7
+      },
+      "chaosAwards": [
+        5,
+        5
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 213,
+      "estimatedCombatPlaybackSeconds": 202.57500000002173,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 306.57500000002176
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 14,
+      "bombardments": 3,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 6,
+        "heavy": 3,
+        "bomb": 2,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        3,
+        2
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 142,
+      "estimatedCombatPlaybackSeconds": 82.53888888888322,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 154.5388888888832
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 30,
+      "bombardments": 6,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 12,
+        "heavy": 4,
+        "bomb": 7,
+        "fire": 5,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        5,
+        4
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 243,
+      "estimatedCombatPlaybackSeconds": 177.16666666667496,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 297.1666666666749
+    },
+    {
+      "terrain": "hanging",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 2,
+        "heavy": 0,
+        "bomb": 1,
+        "fire": 2,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        1,
+        2
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 77,
+      "estimatedCombatPlaybackSeconds": 41.563888888887796,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 97.56388888888779
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 35,
+      "bombardments": 6,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 13,
+        "heavy": 7,
+        "bomb": 3,
+        "fire": 6,
+        "vortex": 6
+      },
+      "chaosAwards": [
+        5,
+        6
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 260,
+      "estimatedCombatPlaybackSeconds": 238.9944444444818,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 358.9944444444818
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 32,
+      "bombardments": 6,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 17,
+        "heavy": 3,
+        "bomb": 6,
+        "fire": 3,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        5,
+        6
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 264,
+      "estimatedCombatPlaybackSeconds": 196.94722222223965,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 316.94722222223965
+    },
+    {
+      "terrain": "hanging",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 48,
+      "bombardments": 8,
+      "winner": 0,
+      "reason": "Siege limit reached • surviving soldiers decide",
+      "ammoUsed": {
+        "bolt": 21,
+        "heavy": 6,
+        "bomb": 7,
+        "fire": 5,
+        "vortex": 9
+      },
+      "chaosAwards": [
+        6,
+        8
+      ],
+      "survivors": [
+        2,
+        1
+      ],
+      "peakBodies": 287,
+      "estimatedCombatPlaybackSeconds": 293.8916666667057,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 445.8916666667057
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 20,
+      "bombardments": 4,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 8,
+        "heavy": 2,
+        "bomb": 2,
+        "fire": 7,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        4,
+        4
+      ],
+      "survivors": [
+        1,
+        0
+      ],
+      "peakBodies": 241,
+      "estimatedCombatPlaybackSeconds": 149.397222222221,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 237.397222222221
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 15,
+      "bombardments": 3,
+      "winner": 0,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 5,
+        "heavy": 3,
+        "bomb": 4,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        2,
+        0
+      ],
+      "peakBodies": 227,
+      "estimatedCombatPlaybackSeconds": 103.93611111110174,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 175.93611111110175
+    },
+    {
+      "terrain": "hanging",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 10,
+        "heavy": 3,
+        "bomb": 3,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        2,
+        3
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 141,
+      "estimatedCombatPlaybackSeconds": 116.03333333332095,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 204.03333333332097
+    },
+    {
+      "terrain": "scrap",
+      "scale": "skirmish",
+      "seed": 17,
+      "shots": 11,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 7,
+        "heavy": 0,
+        "bomb": 1,
+        "fire": 3,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 133,
+      "estimatedCombatPlaybackSeconds": 69.41666666666259,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 125.41666666666259
+    },
+    {
+      "terrain": "scrap",
+      "scale": "skirmish",
+      "seed": 71,
+      "shots": 28,
+      "bombardments": 5,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 12,
+        "heavy": 3,
+        "bomb": 5,
+        "fire": 5,
+        "vortex": 3
+      },
+      "chaosAwards": [
+        5,
+        5
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 246,
+      "estimatedCombatPlaybackSeconds": 180.13055555556969,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 284.1305555555697
+    },
+    {
+      "terrain": "scrap",
+      "scale": "skirmish",
+      "seed": 1042,
+      "shots": 23,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 8,
+        "heavy": 4,
+        "bomb": 2,
+        "fire": 4,
+        "vortex": 5
+      },
+      "chaosAwards": [
+        4,
+        4
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 226,
+      "estimatedCombatPlaybackSeconds": 137.3805555555511,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 225.3805555555511
+    },
+    {
+      "terrain": "scrap",
+      "scale": "siege",
+      "seed": 17,
+      "shots": 15,
+      "bombardments": 3,
+      "winner": -1,
+      "reason": "Mutual destruction",
+      "ammoUsed": {
+        "bolt": 8,
+        "heavy": 1,
+        "bomb": 2,
+        "fire": 2,
+        "vortex": 2
+      },
+      "chaosAwards": [
+        3,
+        2
+      ],
+      "survivors": [
+        0,
+        0
+      ],
+      "peakBodies": 201,
+      "estimatedCombatPlaybackSeconds": 95.19722222221411,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 167.19722222221412
+    },
+    {
+      "terrain": "scrap",
+      "scale": "siege",
+      "seed": 71,
+      "shots": 7,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 2,
+        "heavy": 1,
+        "bomb": 2,
+        "fire": 2,
+        "vortex": 0
+      },
+      "chaosAwards": [
+        1,
+        1
+      ],
+      "survivors": [
+        0,
+        3
+      ],
+      "peakBodies": 156,
+      "estimatedCombatPlaybackSeconds": 52.855555555553856,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 108.85555555555385
+    },
+    {
+      "terrain": "scrap",
+      "scale": "siege",
+      "seed": 1042,
+      "shots": 36,
+      "bombardments": 6,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 14,
+        "heavy": 6,
+        "bomb": 7,
+        "fire": 3,
+        "vortex": 6
+      },
+      "chaosAwards": [
+        5,
+        6
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 210,
+      "estimatedCombatPlaybackSeconds": 189.3000000000076,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 309.30000000000757
+    },
+    {
+      "terrain": "scrap",
+      "scale": "grand",
+      "seed": 17,
+      "shots": 11,
+      "bombardments": 2,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 6,
+        "heavy": 0,
+        "bomb": 1,
+        "fire": 3,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        2,
+        2
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 158,
+      "estimatedCombatPlaybackSeconds": 107.67777777777022,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 163.67777777777022
+    },
+    {
+      "terrain": "scrap",
+      "scale": "grand",
+      "seed": 71,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 9,
+        "heavy": 3,
+        "bomb": 4,
+        "fire": 2,
+        "vortex": 1
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        0,
+        2
+      ],
+      "peakBodies": 228,
+      "estimatedCombatPlaybackSeconds": 121.07777777776506,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 209.07777777776505
+    },
+    {
+      "terrain": "scrap",
+      "scale": "grand",
+      "seed": 1042,
+      "shots": 19,
+      "bombardments": 4,
+      "winner": 1,
+      "reason": "Last soldiers standing",
+      "ammoUsed": {
+        "bolt": 7,
+        "heavy": 2,
+        "bomb": 3,
+        "fire": 3,
+        "vortex": 4
+      },
+      "chaosAwards": [
+        3,
+        3
+      ],
+      "survivors": [
+        0,
+        1
+      ],
+      "peakBodies": 189,
+      "estimatedCombatPlaybackSeconds": 136.25833333332704,
+      "assumedInitialBuildSecondsPerPlayer": 20,
+      "assumedRepairSecondsPerPlayer": 8,
+      "estimatedTotalWithThoseReadyTimes": 224.25833333332704
+    }
+  ]
+}

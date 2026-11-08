@@ -10,3 +10,11 @@ Baseline: Alpha 2.2 commit 9d4568b, preserved as `preserve/alpha-2.2-9d4568b`. U
 6. Run physics, reward, persistent-effect, gesture, CPU, complete-match, touch browser and rubble regressions. Inspect screenshots/recordings, refine observed failures, create working checkpoints and package built game plus source.
 
 Quality gate: cohesive playable mechanics, no missing essential touch actions, physical causal chains, no random shot deviation or spontaneous environment damage, honest hardware/playtest limitations. Automated results can support physical behavior and usability; enjoyment remains a human playtest hypothesis.
+
+## Completed checkpoints
+
+- 2163ba6: integrated toy physics, five shots, rewards, constructor assistance, test rigs and first regressions.
+- a412597: final integration: static-mechanism settling and live-fragment budgeting fixed; physically supported hanging beams, charged-load springs, causal chain recording, useful CPU shot choices and camera persistence verified.
+- Delivery: all 83 Node tests, 47 browser checks, 36 natural matches, four rubble/effect workloads, 16 comparison runs, native-touch gameplay recording and extracted-package validation. Human fun, competitive equilibrium and actual iPad Safari remain unverified.
+
+The final local commit contains the report, source and runnable packages. No stage was used as a permission checkpoint; no remote publication was performed.

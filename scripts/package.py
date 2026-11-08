@@ -4,8 +4,8 @@ import zipfile, hashlib
 root=Path(__file__).resolve().parent.parent
 out=root/'downloads';out.mkdir(exist_ok=True)
 if not (root/'dist/index.html').is_file():raise SystemExit('Run npm run build first.')
-name='reign-of-doom-alpha22'
-readme="""REIGN OF DOOM / ALPHA 2.2 — CHAOS ENGINE
+name='reign-of-doom-alpha3'
+readme="""REIGN OF DOOM / ALPHA 3 — CHAOS EDITION
 
 Run: node scripts/serve.mjs
 Open the local address printed by the server. Node 24 recommended.
@@ -28,5 +28,6 @@ with zipfile.ZipFile(out/f'{name}-complete.zip','w',zipfile.ZIP_DEFLATED) as z:
   rel=p.relative_to(root)
   if any(x in rel.parts for x in ['.git','node_modules','test-results','downloads','__pycache__']):continue
   if p.is_file():z.write(p,f'{name}-complete/'+str(rel))
+ z.write(root/'downloads/reign-of-doom-alpha22-browser.zip',f'{name}-complete/preserved/reign-of-doom-alpha22-browser.zip')
 for suffix in ['browser','complete']:
  p=out/f'{name}-{suffix}.zip';(out/(p.name+'.sha256')).write_text(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n');print(p.name,p.stat().st_size,'bytes')

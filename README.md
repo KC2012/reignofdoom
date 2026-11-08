@@ -1,39 +1,42 @@
-# Reign of Doom — Alpha 2.2
+# Reign of Doom — Alpha 3: Chaos Edition
 
-**Chaos Engine.** A physical castle game for two people sharing a tablet, with desktop and CPU play. Build unusual forts, knock their supports away, then improvise with a sequential repair queue.
+A competitive physical toy for two people sharing a landscape iPad, with desktop and CPU play. Build something ridiculous, hit it with a heavy ball, improvise repairs, and see what survives.
 
-## Play the complete download
+## Play
 
-Extract `downloads/reign-of-doom-alpha22-complete.zip` (built game, source, tests and report), or the smaller `reign-of-doom-alpha22-browser.zip`, then run:
+Extract `downloads/reign-of-doom-alpha3-complete.zip` for the built game, source, tests, report and gameplay recording. A preserved Alpha 2.2 browser ZIP is also included under `preserved/` for comparison or rollback. The smaller `reign-of-doom-alpha3-browser.zip` contains just the runnable game. From the extracted folder:
 
 ```sh
 node scripts/serve.mjs
 ```
 
-Node 24 is recommended. Open the printed address and choose **Two players**. The built game needs no npm installation. For an iPad on the same Wi-Fi, serve on the local network:
+Node 24 is recommended. Open the printed address and tap **Two players**. The built game requires no npm installation or external requests after loading.
+
+For an iPad on the same Wi-Fi:
 
 ```sh
 HOST=0.0.0.0 node scripts/serve.mjs
 ```
 
-In Windows PowerShell, set `$env:HOST="0.0.0.0"` first, then run the Node command. Use the printed tablet address. Default serving is loopback only; `PORT` defaults to 8080. A static host can also serve `dist/`. Serve over HTTP; double-clicking `index.html` is unsupported.
+In Windows PowerShell, first set `$env:HOST="0.0.0.0"`, then run the Node command. Use the printed tablet address. Default serving is loopback only; `PORT` defaults to 8080. A static host can also serve `dist/`. Serve over HTTP; double-clicking `index.html` is unsupported. Reloading or an evicted browser tab needs the server again; this is not an installed offline PWA.
 
-Once loaded, the game makes no external requests. Reloading or an evicted browser tab requires the server again; this is not an installed offline PWA.
+## The toy
 
-## Controls and physical choices
+- **Build:** drag from the tray or tap a piece then a place. Tap an existing block or soldier, then its destination, or drag it. **Rotate** works while holding, including with a second finger. **Cancel** restores the piece. R/right-click/wheel also rotate on desktop. Green fits; red overlaps. Falling bodies pause while you manipulate construction, while the build clock keeps running. Battle physics never stays suspended.
+- **Build upward:** each player starts with two wide Tower frames and two Raised decks. One gesture places three independent load-bearing timbers. Rearrange them separately afterward. Soldiers can stand on floors and fall when supports break. There are no height bonuses or minimum tower requirements; bunkers remain legal.
+- **Fire:** pull the ballista ring away from the enemy and down, then release. The ring leaves room for a full pull even in the wide view. More pull gives more power. A shortened, fading arc helps aiming without showing the exact impact. Shots have no random deviation.
+- **Five shots:** unlimited **Wrecker** moves whole structures; **Piercer** concentrates damage; **Burst** spreads force; **Fire** burns touching timber and cork; **Vortex** lifts and twists loose construction. Heavy materials resist lifting. Springs, powder and your own structures can turn a shot against you.
+- **Chaos:** meaningful destruction of original enemy structures earns progress toward a special shot at 40. Fragments and friendly damage do not count. Each target has bounded credit, stocks are capped, rewards slow while ahead, and at most one is awarded per bombardment. Both players receive a repair refill too. No persistent currency or shop.
+- **Repairs:** three alternating shots each, then both players get the same six-piece sequence. Place the current piece or **Skip −2s**; the next is shown. At most one powder crate is dealt, surrounded by utility pieces. An occasional spring is preloaded for one hard-contact release. One soldier move and three safe fragment clearances remain available.
+- **Reactions:** orange **!** powder detonates from hard damage, a sufficiently heavy moving block, or burning through its shell. Gold **×** beams support visible ropes and weights. Green **∿** pads launch once after a hard collision, then show **—**. These objects share real collisions, gravity and damage.
+- **Camera:** both forts are the default. Choose **My fort / Ballista / Follow shot**, **Opponent**, **Both forts**, or +/−. The chosen aiming view stays through the shot and collapse, then the next turn returns to the wide view. Two fingers always pan/pinch and cancel a pending shot. Desktop wheel, Shift-drag and middle-drag navigate too.
+- **Turns:** the colored bar names the active player. Ready advances building early; Menu pauses; Again! rematches with the same settings. Human aiming never times out into an automatic shot. Desktop arrows/Space and P remain optional shortcuts.
 
-- **Build:** drag from the tray, or tap a piece then tap a location. Rotate while holding using the visible Rotate button with another finger, or R/right-click/wheel on desktop. Tap existing blocks to select; drag to move. Cancel restores a held block. Green fits; red overlaps.
-- **Build upward:** Tower frame and Raised deck place three independent timbers in one gesture. Their floors depend on real supports. Pieces can be rearranged separately. Three seeded starter silhouettes provide floors and space to expand; bunkers remain legal.
-- **Soldiers:** tap a soldier, then tap a clear floor, or drag them there. Initial moves are free; repairs allow one successful move. Soldiers fall and can be crushed when their supports fail.
-- **Shoot:** pull the ballista ring away from the enemy and down, then release. Smash displaces structures, Piercer concentrates damage into narrow supports, and Burst distributes force. The fading prediction shows roughly the first 75% of ground flight. The opponent inset has no precise-impact overlay.
-- **Repair:** both players receive the same seeded six-piece sequence, one piece at a time. Place the current piece or **Skip −2s**; the next is shown. Simple beams and bricks surround a more demanding piece. At most one powder crate is dealt. Discarding never permanently locks the queue. Three safe fragment clearances remain available.
-- **Reactions:** orange **!** crates detonate from hard impacts or accumulated damage. Gold **×** posts are breakaway supports. Hanging Works has visible ropes and heavy teal weights; breaking a post releases its weight. These objects share normal collisions, gravity and damage.
-- **Camera:** both forts are the default in every phase. My fort / Ballista / Follow shot, Opponent, Both forts and +/− give explicit views. Two fingers pan/pinch anywhere. Desktop wheel, Shift-drag and middle-drag also work. Navigation cannot commit an armed shot.
-- **Turns:** three alternating shots each, then repairs. Ready ends building early. The colored bar names the active player. Human aiming has no automatic timeout shot. Menu pauses; Again! starts a fresh match with the same settings.
+**Match settings** includes the three retained scales, CPU difficulty, seed, four featured arenas and older terrain variants. The Flats is clean competition; Powder Yard adds volatile cover; Hanging Works uses real timber-supported suspended weights; Scrapworks combines charged pads and powder. Grand Siege remains experimental.
 
-Match settings includes The Flats, Powder Yard and Hanging Works, the four retained terrain variants, three scales, CPU difficulty and seed. Grand Siege remains experimental. Both players use the same upright interface. R/Escape/V/P/arrows/Space remain optional desktop shortcuts.
+**Toy lab / proving ground** under Match settings offers Tower, Bunker and Chain rigs through Menu. Each rig starts ready to fire, with three of every special shot. Reset a rig to compare ammunition immediately. The Chain rig permits an actual shot → broken beam → falling weight → powder → spring sequence. Drop load, Pull supports and Next phase remain available by touch; K/L/N are desktop equivalents.
 
-## Development and verification
+## Development and checks
 
 ```sh
 npm ci
@@ -41,16 +44,20 @@ npm run dev
 npm test
 npm run build
 npm run test:browser
-npm run test:webkit
+npm run compare:physics
 npm run audit:arcade
-node scripts/audit-chaos.mjs
+npm run audit:chaos
+npm run test:webkit
 python3 scripts/package.py
+npm run test:package
 ```
 
-The Node suite has 63 physics, queue, rules, camera and gesture checks. Browser checks exercise trusted Chromium multi-touch, complete matches through rematch, the new arenas, tablet/short-height/phone layouts, and desktop/CPU controls. `CHROMIUM_PATH` overrides `/usr/bin/chromium`. Browser test previews use ports 4173 and 4174.
+System Chromium defaults to `/usr/bin/chromium`; `CHROMIUM_PATH` overrides it. The browser runner tests trusted touch, multi-touch, phone/tablet layouts, all five real shots, construction, repairs, CPU and rematches. It starts its own preview on port 4173. The package smoke test uses 4176.
 
-**Actual iPad hardware and iPad Safari were not verified.** The pinned WebKit engine download was blocked by network policy; `test:webkit` records not-run and exits 2. Chromium tablet emulation does not establish Safari compatibility. Cloud CPU workload timings do not establish iPad frame rates. Fun, strategic balance and real-device acceptance need human playtests.
+`npm run record:chaos` records native touch gameplay at port 4178. It needs Playwright FFmpeg (`npx playwright install ffmpeg`) as well as Chromium. This cloud recording used the already-installed system FFmpeg through a temporary `PLAYWRIGHT_BROWSERS_PATH`. The silent recording uses deterministic aiming to compare toy-lab shots; no impacts or explosions are injected.
 
-See [the development report](docs/development-report.md) for evidence, limits and recommended playtests. Current retained evidence is in `docs/verification/alpha22/`; ignored fresh output goes to `test-results/alpha22/`. Earlier reports are historical.
+**Actual iPad hardware and iPad Safari were not verified.** WebKit's pinned engine is unavailable because its download was blocked by network policy; the probe records not-run and exits 2. Chromium viewport simulation does not establish Safari compatibility, iPad frame rate, thermal behavior, ergonomics or fun.
 
-`simulation.js` owns physics, `reactive.js` handles damage-driven activation, `chaos.js` defines assemblies/queue/prediction truncation, `match.js` owns turns and CPU, and `gestures.js`, `camera.js`, `interface.js` and `main.js` connect input and presentation. No new dependency or external service was added. Third-party attribution is in `public/`.
+See the [development report](docs/development-report.md), [gameplay recording](docs/verification/alpha3/alpha3-gameplay.webm) and evidence in `docs/verification/alpha3/`. Fresh test output goes to ignored `test-results/alpha3/`. Alpha 2.2 is preserved at commit `9d4568b` and branch `preserve/alpha-2.2-9d4568b`; Alpha 3 work stays on `development/alpha3-chaos` until separately approved for publication.
+
+No new dependency, account, backend or paid service was added. Third-party notices are in `public/`. The preserved Alpha 2.2 simulation in `experiments/alpha22/` makes physics comparisons reproducible.

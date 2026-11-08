@@ -5,6 +5,7 @@ export const SCALES = {
   grand: { name:'Grand Siege · experimental', width:6400, zone:1300, height:720, stock:2, build:90, repair:40, limit:10 },
 };
 export const FIELDS = {
+  scrap:{name:'Scrapworks',description:'Preloaded springs and powder traps. Hard contact releases a pad once.'},
   powder:{name:'Powder Yard',description:'Mirrored powder crates: risky cover and visible chain targets.'},
   hanging:{name:'Hanging Works',description:'Roped weights depend on breakaway posts.'},
   valley:{name:'The Flats',description:'Open foundations. Room for layered walls.'},

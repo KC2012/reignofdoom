@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import Matter from 'matter-js';
 import {SiegeWorld} from '../src/simulation.js';import {WORLD} from '../src/rules.js';
 const empty=()=>{const w=new SiegeWorld();for(const e of [...w.entities.values()])w.remove(e);w.armed=true;return w;};
-test('starter shelters settle without harming any soldiers',()=>{const w=new SiegeWorld();w.armed=true;w.step(1200);assert.deepEqual(w.troops.map(t=>t.length),[3,3]);assert.ok(w.troops.flat().every(t=>t.health===16));w.dispose();});
+test('starter shelters settle without harming any soldiers',()=>{const w=new SiegeWorld();w.armed=true;w.step(1200);assert.deepEqual(w.troops.map(t=>t.length),[3,3]);assert.ok(w.troops.flat().every(t=>t.health===t.maxHealth));w.dispose();});
 test('snapping, bounds and overlap rules protect soldiers and limit construction',()=>{
  const w=new SiegeWorld();let p=w.placement(0,'brick',-500,900);assert.equal(p.x,586);assert.equal(p.y,795);assert.ok(p.valid);
  assert.equal(w.placement(0,'brick',1000,790).valid,false);assert.equal(w.place(0,'brick',1000,790),false);

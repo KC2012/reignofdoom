@@ -50,7 +50,7 @@ test('camera has separate construction, launch, flight and impact frames',()=>{
 });
 test('heavy stacked rubble transmits crushing through a light intervening fragment',()=>{
  const w=new SiegeWorld();for(const e of [...w.entities.values()])w.remove(e);w.armed=true;
- const soldier=w.soldier(0,2000,795);w.block(0,'wood',2000,776,40,12,0,'rect',{fragment:true});w.block(0,'stone',2000,759,80,20,0,'rect',{fragment:true});w.step(300);
+ const soldier=w.soldier(0,2000,795);w.block(0,'wood',2000,776,40,12,0,'rect',{fragment:true});w.block(0,'stone',2000,749,80,40,0,'rect',{fragment:true});w.step(300);
  assert.ok(!w.entities.has(soldier.body.id));assert.ok(w.history.some(e=>e.source==='compression'));w.dispose();
 });
 test('intervening structural cover attenuates a Burst blast',()=>{
@@ -69,6 +69,6 @@ test('withdrawing a support wakes a connected tower above the old local wake rad
  for(let i=0;i<10;i++)top=w.block(0,'wood',2000,730-i*20,52,20);w.step(300);const y=top.body.position.y;assert.ok(top.body.isSleeping);w.remove(base);assert.equal(top.body.isSleeping,false);w.step(100);assert.ok(top.body.position.y>y+25);w.dispose();
 });
 test('Grand Siege CPU falls back to a reachable bolt instead of stalling on Burst ammo',()=>{
- const m=new Match({mode:'cpu',scale:'grand'});m.ready();m.ready();m.active=1;m.rng=()=>0;for(const e of m.world.troops[0].slice(1))m.world.remove(e);Matter.Body.setPosition(m.world.troops[0][0].body,{x:300,y:795});for(const e of [...m.world.entities.values()])if(e.side===0&&e.kind==='block')m.world.remove(e);m.ammo[1].heavy=0;m.ammo[1].bomb=1;
+ const m=new Match({mode:'cpu',scale:'grand'});m.ready();m.ready();m.active=1;m.rng=()=>0;m.cpuAmmo=()=> 'bomb';for(const e of m.world.troops[0].slice(1))m.world.remove(e);Matter.Body.setPosition(m.world.troops[0][0].body,{x:300,y:795});for(const e of [...m.world.entities.values()])if(e.side===0&&e.kind==='block')m.world.remove(e);m.ammo[1].heavy=0;m.ammo[1].bomb=1;
  for(let i=0;i<130&&m.phase==='aim';i++)m.tick(1/60);assert.equal(m.phase,'flight');assert.equal(m.lastShot.side,1);assert.equal(m.lastShot.ammo,'bolt');m.dispose();
 });

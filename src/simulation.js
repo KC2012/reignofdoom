@@ -3,15 +3,17 @@ import { WORLD, SIDES, MATERIALS, PIECES, AMMO, STEP, clamp } from './rules.js';
 import { battlefield } from './battlefields.js';
 import { damageReaction } from './reactive.js';
 import { assemblyParts } from './chaos.js';
+import { ProjectileEffects } from './projectile-effects.js';
+import { TOY_PHYSICS } from './physics-tuning.js';
 import { contactImpact } from './impact.js';
 const { Engine, Bodies, Body, Composite, Events, Query, Sleeping, Vector, Constraint } = Matter;
 export class SiegeWorld {
-  constructor(seed = 1, terrain = 'valley', scale='siege') {
-    this.layout=battlefield(scale,terrain);this.sides=this.layout.sides;this.deaths=[];this.cleanupCount=0;
+  constructor(seed = 1, terrain = 'valley', scale='siege',physics=TOY_PHYSICS) {
+    this.physics=physics;this.layout=battlefield(scale,terrain);this.sides=this.layout.sides;this.deaths=[];this.cleanupCount=0;
     this.engine=Engine.create({enableSleeping:true,positionIterations:10,velocityIterations:8});
     this.engine.gravity.y=.8; this.entities=new Map(); this.events=[]; this.time=0; this.armed=false;
     this.pending=new Map(); this.blasts=new Set(); this.shot=null; this.seed=seed; this.terrain=terrain;
-    this.links=[];this.reactionHistory=[];this.terrainBodies=[]; this.history=[]; this.fragmentCount=0;
+    this.effects=new ProjectileEffects(this);this.links=[];this.reactionHistory=[];this.terrainBodies=[]; this.history=[]; this.fragmentCount=0;
     const width=this.layout.width,g=WORLD.ground;
     if(terrain==='ravine'){
       this.addTerrain(Bodies.rectangle(width/4-100,g+200,width/2-200,400,{isStatic:true,friction:.9}));
@@ -31,7 +33,7 @@ export class SiegeWorld {
   addTerrain(body) { body.label='terrain'; this.terrainBodies.push(body); Composite.add(this.engine.world,body); }
   add(body, meta) { const e={body,health:meta.maxHealth??40,maxHealth:meta.maxHealth??40,born:this.time,...meta}; body.plugin.entity=e; this.entities.set(body.id,e); Composite.add(this.engine.world,body); return e; }
   block(side, material, x,y,w,h,angle=0,shape='rect', extra={}) {
-    const m=MATERIALS[material]; const options={density:m.density,friction:m.friction,frictionStatic:m.friction+ .15,restitution:m.restitution,slop:.03,sleepThreshold:90};
+    const m=MATERIALS[material]; const options={density:m.density,friction:m.friction*this.physics.grip,frictionStatic:(m.friction+.15)*this.physics.grip,restitution:Math.max(m.restitution,.07),slop:.03,sleepThreshold:90};
     let body;
     if(assemblyParts(shape))body=Body.create({...options,parts:assemblyParts(shape).map(([dx,dy,pw,ph])=>Bodies.rectangle(x+dx,y+dy,pw,ph,options))});
     else if (shape==='wedge') body=Bodies.fromVertices(x,y,[[{x:-w/2,y:h/2},{x:w/2,y:h/2},{x:w/2,y:-h/2}]],options);
@@ -42,7 +44,7 @@ export class SiegeWorld {
     return this.add(body,{kind:'block',side,material,w,h,shape,maxHealth:m.health * (w*h/2160),...extra});
   }
   soldier(side,x,y) {
-    return this.add(Bodies.rectangle(x,y,15,27,{density:.0018,friction:.9,restitution:0,slop:.02,sleepThreshold:75,chamfer:{radius:4}}),{kind:'soldier',side,maxHealth:16,w:15,h:27,crush:0});
+    return this.add(Bodies.rectangle(x,y,15,27,{density:this.physics.soldier.density,friction:this.physics.soldier.friction,restitution:this.physics.soldier.restitution,slop:.02,sleepThreshold:75,chamfer:{radius:this.physics.soldier.chamfer}}),{kind:'soldier',side,maxHealth:this.physics.soldier.health,w:15,h:27,crush:0});
   }
   starter(side) {
     const x=this.sides[side].center,g=this.foundation(side);
@@ -63,6 +65,7 @@ export class SiegeWorld {
     if(this.terrain==='powder')for(let side=0;side<2;side++){
       const s=this.sides[side],g=this.foundation(side);this.block(side,'wood',s.center+s.direction*270,g-20,40,40,0,'rect',{reactive:'volatile',maxHealth:26});
     }
+    if(this.terrain==='scrap')for(let side=0;side<2;side++){const s=this.sides[side],g=this.foundation(side),x=s.center+s.direction*265;const spring=this.block(side,'metal',x,g-9,80,18,0,'rect',{reactive:'spring',fixed:true,throwDirection:-s.direction,maxHealth:90});Body.setStatic(spring.body,true);this.block(side,'wood',x,g-37,36,36,0,'rect',{reactive:'volatile',maxHealth:32});}
     if(this.terrain==='hanging')for(let side=0;side<2;side++)this.hangingWeight(side,this.sides[side].center+this.sides[side].direction*230,this.foundation(side));
   }
   hangingWeight(side,x,g){
@@ -107,14 +110,17 @@ export class SiegeWorld {
       const a=pair.bodyA.parent,b=pair.bodyB.parent;
       if(a===b)continue;
       const ea=a.plugin.entity,eb=b.plugin.entity;
+      const contactPoint=pair.collision.supports.find(Boolean)??{x:(a.position.x+b.position.x)/2,y:(a.position.y+b.position.y)/2};
+      for(const p of[ea,eb])if(p?.kind==='projectile')this.effects.contact(p,contactPoint);
       if(ea?.kind==='projectile'&&ea.ammo==='bomb'&&!ea.exploded)this.blasts.add(ea);
       if(eb?.kind==='projectile'&&eb.ammo==='bomb'&&!eb.exploded)this.blasts.add(eb);
       const point=pair.collision.supports.find(Boolean)??{x:(a.position.x+b.position.x)/2,y:(a.position.y+b.position.y)/2};
       const impact=contactImpact(a,b,point,pair.collision.normal);
+      this.effects.springContact(ea,eb,impact.closing);this.effects.springContact(eb,ea,impact.closing);
       if(impact.closing<1.4)continue;
       for(const [projectile,target]of [[ea,eb],[eb,ea]])if(projectile?.kind==='projectile'&&target?.kind==='block'){
         projectile.struck??=new Set();if(!projectile.struck.has(target.body.id)){projectile.struck.add(target.body.id);
-          if(projectile.ammo==='bolt'&&!target.body.isStatic&&impact.closing>3){const direction=Vector.normalise(projectile.body.velocity),kick=Math.min(7,impact.energy/(target.body.mass+1)*.035);Sleeping.set(target.body,false);Body.setVelocity(target.body,{x:target.body.velocity.x+direction.x*kick,y:target.body.velocity.y+direction.y*kick- .5*kick});Body.setAngularVelocity(target.body,target.body.angularVelocity+(point.y-target.body.position.y)*direction.x*.0007);this.reactionHistory.push({type:'smash-impulse',cause:projectile.body.id,target:target.body.id,time:this.time});}
+          if(projectile.ammo==='bolt'&&!target.body.isStatic&&impact.closing>3){const direction=Vector.normalise(projectile.body.velocity),kick=Math.min(this.physics.kickCap,impact.energy/(target.body.mass+1)*this.physics.kick);Sleeping.set(target.body,false);Body.setVelocity(target.body,{x:target.body.velocity.x+direction.x*kick,y:target.body.velocity.y+direction.y*kick- .5*kick});Body.setAngularVelocity(target.body,target.body.angularVelocity+(point.y-target.body.position.y)*direction.x*.0007);this.reactionHistory.push({type:'smash-impulse',cause:projectile.body.id,target:target.body.id,time:this.time});}
           if(projectile.ammo==='heavy'&&projectile.struck.size<=3)projectile.pierce={target,velocity:{...projectile.body.velocity}};
         }
       }
@@ -122,13 +128,13 @@ export class SiegeWorld {
         if(!target||target.kind==='projectile')continue;
         let damage=impact.energy*.09;
         if(target.kind==='block')damage/=MATERIALS[target.material].resistance;
-        if(other?.kind==='projectile') damage*=AMMO[other.ammo].damage;
+        if(other?.kind==='projectile') damage*=other.ammo==='bolt'?this.physics.damage:AMMO[other.ammo].damage;
         if(target.kind==='soldier') {
-          damage*=2.1;
+          damage*=this.physics.soldierImpact;
           if(otherBody.isStatic&&impact.closing<4.5)damage=0;
           // Opposed ground reaction makes a pinned soldier absorb the descending load.
           if(other?.kind==='block'&&otherBody.position.y<target.body.position.y&&target.body.position.y>WORLD.ground-35&&otherBody.velocity.y>1.2)
-            damage=Math.max(damage,otherBody.mass*otherBody.velocity.y*.8);
+            damage=Math.max(damage,otherBody.mass*otherBody.velocity.y*this.physics.soldier.pinned);
         }
         const old=this.pending.get(target.body.id);
         if(!old||damage>old.amount)this.pending.set(target.body.id,{e:target,amount:damage,source:other?.kind??'ground'});
@@ -145,7 +151,7 @@ export class SiegeWorld {
     const horizontal=w>=h;
     for(const sign of [-1,1]) {
       const offset=horizontal?{x:sign*w/4,y:0}:{x:0,y:sign*h/4}; const d=Vector.rotate(offset,angle);
-      const f=this.block(side,material,pos.x+d.x,pos.y+d.y,horizontal?w/2-1:w,horizontal?h:h/2-1,angle,'rect',{generation:(e.generation??0)+1,fragment:true});
+      const f=this.block(side,material,pos.x+d.x,pos.y+d.y,horizontal?w/2-1:w,horizontal?h:h/2-1,angle,'rect',{generation:(e.generation??0)+1,fragment:true,burnUntil:e.burnUntil,burnOwner:e.burnOwner,spreadAt:this.time+650});
       f.health=f.maxHealth*=.25;Body.setMass(f.body,b.mass/2); Body.setVelocity(f.body,{x:vel.x-av*d.y,y:vel.y+av*d.x}); Body.setAngularVelocity(f.body,av); this.fragmentCount++;
     }
   }
@@ -163,7 +169,7 @@ export class SiegeWorld {
   }
   launch(side,velocity,ammo='bolt',xOffset=0) {
     if(this.shot)return false; this.armed=true;this.totalShots=(this.totalShots??0)+1;
-    const config=AMMO[ammo],s=this.sides[side];
+    const config=ammo==='bolt'?{...AMMO.bolt,radius:this.physics.radius,density:this.physics.density}:AMMO[ammo],s=this.sides[side];
     const body=Bodies.circle(s.launcher[0]+xOffset,s.launcher[1]-20,config.radius,{density:config.density,friction:.7,restitution:.08,frictionAir:.0002});
     const e=this.add(body,{kind:'projectile',ammo,side,maxHealth:1e6});
     Body.setVelocity(body,velocity); this.shot={entity:e,age:0,quiet:0,origin:{...body.position},trail:[]};
@@ -174,6 +180,7 @@ export class SiegeWorld {
     Engine.update(this.engine,STEP/2);Engine.update(this.engine,STEP/2);
     for(const {e,amount,source} of this.pending.values())this.hurt(e,amount,source);this.pending.clear();
     for(const projectile of this.entities.values())if(projectile.pierce){const {target,velocity}=projectile.pierce;delete projectile.pierce;if(target.health<=0&&this.entities.has(target.body.id)&&!target.reactive){this.fracture(target);Body.setVelocity(projectile.body,{x:velocity.x*.8,y:velocity.y*.8});this.reactionHistory.push({type:'penetration',cause:projectile.body.id,target:target.body.id,time:this.time});}}
+    this.effects.update();
     for(const e of [...this.blasts]){this.blasts.delete(e);this.explode(e);}
     for(const e of [...this.entities.values()]) {
       if(e.fractureAt&&this.time>=e.fractureAt)this.fracture(e);
@@ -194,11 +201,11 @@ export class SiegeWorld {
       if(s.entity.ammo==='bomb'&&s.age>10000&&!s.entity.exploded)this.explode(s.entity);
       const flying=this.entities.has(s.entity.body.id)&&!s.entity.hitAt&&s.entity.body.position.y<WORLD.ground+40;
       const moving=[...this.entities.values()].some(e=>!e.body.isSleeping&&(e.kind!=='projectile')&&(e.body.speed>.65||Math.abs(e.body.angularVelocity)>.025)||e.fractureAt||(e.kind==='soldier'&&e.crush>0));
-      s.quiet=(!flying&&!moving)?s.quiet+STEP:0;
+      s.quiet=(!flying&&!moving&&!this.effects.busy&&!this.blasts.size)?s.quiet+STEP:0;
     }
   }
   step(n=1) { for(let i=0;i<n;i++)this.advance(); }
-  shotFinished() {return !!this.shot&&(this.shot.quiet>650||(this.shot.age>14000&&![...this.entities.values()].some(e=>e.kind!=='projectile'&&(e.body.speed>1.8||Math.abs(e.body.angularVelocity)>.025||e.fractureAt||(e.kind==='soldier'&&e.crush>0)))));}
+  shotFinished() {return !!this.shot&&!this.effects.busy&&!this.blasts.size&&(this.shot.quiet>650||(this.shot.age>14000&&![...this.entities.values()].some(e=>e.kind!=='projectile'&&(e.body.speed>1.8||Math.abs(e.body.angularVelocity)>.025||e.fractureAt||(e.kind==='soldier'&&e.crush>0)))));}
   finishShot() {
     // Keep all structural debris. Only spent ammunition is removed between turns.
     for(const e of [...this.entities.values()])if(e.kind==='projectile')this.remove(e);
@@ -293,5 +300,5 @@ export class SiegeWorld {
     const p=this.soldierPlacement(e,x,y);if(!p.valid)return false;
     Body.setPosition(e.body,p);Body.setAngle(e.body,0);Body.setVelocity(e.body,{x:0,y:0});Body.setAngularVelocity(e.body,0);Sleeping.set(e.body,false);e.crush=0;e.lastCompression=-Infinity;e.lastLoad=0;return true;
   }
-  dispose() { Events.off(this.engine);Composite.clear(this.engine.world,false);Engine.clear(this.engine);this.entities.clear(); }
+  dispose() { this.effects.dispose();Events.off(this.engine);Composite.clear(this.engine.world,false);Engine.clear(this.engine);this.entities.clear(); }
 }

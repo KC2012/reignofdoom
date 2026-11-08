@@ -7,3 +7,9 @@
 .queue-next{align-self:center;max-width:145px;font-size:11px;color:var(--muted);padding:8px}#discard{min-width:72px}@media(max-width:650px){.queue-next{max-width:85px;font-size:9px}#discard{min-width:60px;font-size:10px}}
 
 @media(max-width:650px){#controls.build{height:116px;min-height:116px}#controls.build .pieces{display:grid;grid-template-columns:repeat(4,minmax(44px,1fr));gap:4px}#controls.build .piece{min-width:44px;min-height:48px;max-width:none;font-size:9px;padding:2px}#controls.repair .pieces{flex:0 0 80px}#controls.repair{height:76px;min-height:76px}.piece-icon{line-height:18px}}
+
+.chaos-meter{align-self:center;display:flex;flex-direction:column;gap:4px;min-width:148px;font:10px 'Courier New',monospace;color:var(--muted);margin-inline:8px}.chaos-meter span{color:var(--turn);letter-spacing:1px}.chaos-meter b{float:right}.chaos-meter progress{width:100%;height:5px;accent-color:var(--turn)}.chaos-meter small{font-size:9px}.ammo{flex:1}.ammo-option{min-width:86px;max-width:180px;gap:7px}.ammo-option .ammo-icon{color:var(--turn)}
+@media(max-width:800px){.chaos-meter{min-width:90px;max-width:105px;font-size:9px;margin:0}.chaos-meter small{display:none}.ammo-option{min-width:60px;gap:4px;padding:5px}.ammo-icon{font-size:20px}}
+@media(max-width:650px){.ammo-option{min-width:48px;min-height:48px;display:flex;flex-direction:column;gap:2px;font-size:10px;padding:3px}.ammo-option small{position:absolute;right:4px;top:4px;font-size:9px}.ammo-option{position:relative}.ammo-icon{line-height:20px;font-size:20px}.chaos-meter{min-width:64px;max-width:64px;font-size:8px}.chaos-meter span{letter-spacing:0}.chaos-meter b{float:none;display:block}.chaos-meter progress{height:4px}}
+
+#lab-actions{flex-wrap:wrap}#lab-actions .rigs{display:flex;gap:5px;flex:1 0 100%}#lab-actions .rigs button{flex:1}

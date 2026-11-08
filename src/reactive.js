@@ -19,3 +19,9 @@ export function damageReaction(world,e,amount,source){
  }
  return false;
 }
+
+/** A heavy moving body can set off powder even before its timber shell breaks. */
+export function impactReaction(world,e,other,impact){
+ if(e?.reactive!=='volatile'||other?.kind!=='block'||other.body.isStatic||impact.closing<=3.5||other.body.mass<=e.body.mass*2.5)return;
+ e.reactionCause??={source:'heavy-impact',body:other.body.id,closing:impact.closing,time:world.time};world.blasts.add(e);
+}

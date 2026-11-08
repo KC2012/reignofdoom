@@ -1,4 +1,4 @@
-Reign of Doom Alpha 2.2
+Reign of Doom Alpha 3
 
 Physics: Matter.js 0.20.0, Copyright (c) Liam Brummitt and contributors.
 MIT License; see matter-js-LICENSE.txt.
@@ -7,7 +7,7 @@ Technical reference supplied by the user: PlushSiege 0.5.0.
 The contact-space impact calculation in src/impact.js is adapted from its
 src/game/damage.ts. The new match, construction, CPU, renderer, interface,
 audio, content and tests are independent of the PlushSiege application.
-The Alpha 2.2 review also informed damage-triggered reactions, constraint release,
+The Alpha 3 review also informed damage-triggered reactions, constraint release,
 queued blast processing and momentum-preserving fracture; these are independent
 implementations in the existing Reign of Doom simulation.
 No PlushSiege campaign, graphic or audio assets are bundled.

@@ -25,3 +25,8 @@ export class GestureSession {
 }
 export function pinchState(points){const[a,b]=[...points.values()];return a&&b?{distance:Math.max(12,Math.hypot(a.x-b.x,a.y-b.y)),mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}}:null;}
 export function inRect(point,rect){return point.x>=rect.left&&point.x<=rect.right&&point.y>=rect.top&&point.y<=rect.bottom;}
+
+/** Reserve enough pull room even when both forts put the launcher near an edge. */
+export function pullHandle(point,viewport){
+ const margin=Math.min(145,viewport.width/2);return{x:Math.min(viewport.width-margin,Math.max(margin,point.x)),y:Math.min(viewport.height-145,Math.max(60,point.y))};
+}

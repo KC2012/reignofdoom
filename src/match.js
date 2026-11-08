@@ -126,7 +126,7 @@ export class Match {
     }
     return false;
   }
-  cpuAmmo(){const available=SPECIALS.filter(id=>this.ammo[this.active][id]>0),choices=['bolt','bolt',...available];return choices[Math.floor(this.rng()*choices.length)];}
+  cpuAmmo(){const enemy=[...this.world.entities.values()].filter(e=>e.side!==this.active&&e.kind==='block'&&!e.fragment);const available=SPECIALS.filter(id=>this.ammo[this.active][id]>0&&(id!=='fire'||enemy.some(e=>e.material==='wood'&&!e.burnt))&&(id!=='vortex'||enemy.length>0)),choices=['bolt','bolt',...available];return choices[Math.floor(this.rng()*choices.length)];}
   tick(dt) {
     if(this.paused||this.phase==='over')return;
     if(!(this.building&&this.manipulating))this.world.advance();

@@ -39,19 +39,22 @@ export class ProjectileEffects {
   }
   this.pending.clear();
   for(const {spring,target,closing}of this.springs.values()){
-   if(!w.entities.has(spring.body.id)||!w.entities.has(target.body.id)||spring.spent)continue;
-   spring.spent=true;const kick=Math.min(10,4+closing*.6),direction=spring.throwDirection??0;
-   Sleeping.set(target.body,false);Body.setVelocity(target.body,{x:target.body.velocity.x+direction*kick*.55,y:Math.min(target.body.velocity.y,-kick)});
-   if(!spring.body.isStatic){Sleeping.set(spring.body,false);Body.setVelocity(spring.body,{x:spring.body.velocity.x-direction*kick*.2,y:spring.body.velocity.y+kick*.25});}
+   if(spring.spent)continue;
+   spring.spent=true;
+   const targets=[...w.entities.values()].filter(e=>!e.body.isStatic&&e!==spring&&(e===target||gap(spring.body.bounds,e.body.bounds)<4)).slice(0,8);
+   const mass=targets.reduce((sum,e)=>sum+e.body.mass,0),kick=Math.min(10,4+closing*.6)*Math.min(1,Math.sqrt(18/Math.max(1,mass))),direction=spring.throwDirection??0;
+   for(const e of targets){Sleeping.set(e.body,false);Body.setVelocity(e.body,{x:e.body.velocity.x+direction*kick*.55,y:Math.min(e.body.velocity.y,-kick)});}
+   if(!spring.body.isStatic&&w.entities.has(spring.body.id)){Sleeping.set(spring.body,false);Body.setVelocity(spring.body,{x:spring.body.velocity.x-direction*kick*.2,y:spring.body.velocity.y+kick*.25});}
    w.emit('spring',spring.body.position.x,spring.body.position.y,kick);w.reactionHistory.push({type:'spring-release',cause:target.body.id,spring:spring.body.id,time:w.time});
   }
   this.springs.clear();
+  // A queued force is consumed by the first of two Matter substeps.
   for(const field of this.fields){
    field.age+=STEP;const envelope=Math.sin(Math.PI*clamp(field.age/field.duration,0,1));
    for(const e of w.entities.values()){
     if(e.body.isStatic||e.kind==='projectile')continue;
     const dx=e.body.position.x-field.x,dy=e.body.position.y-field.y,d=Math.hypot(dx,dy);if(d>=field.radius)continue;
-    const f=(1-d/field.radius)*envelope,denom=Math.max(35,d),force=.0011*Math.min(e.body.mass,6)*f;
+    const f=(1-d/field.radius)*envelope,denom=Math.max(35,d),force=.003*2*Math.min(e.body.mass,6)*f;
     Sleeping.set(e.body,false);Body.applyForce(e.body,e.body.position,{x:(-dx/denom*.4+dy/denom*.8)*force,y:(-1.2-dx/denom*.35)*force});
     Body.setAngularVelocity(e.body,clamp(e.body.angularVelocity+f*.001,-.18,.18));
    }

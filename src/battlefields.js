@@ -1,6 +1,6 @@
 import { WORLD, SIDES } from './rules.js';
 export const SCALES = {
-  skirmish: { name:'Skirmish', width:4000, zone:620, height:440, stock:1, build:55, repair:24, limit:8 },
+  skirmish: { name:'Skirmish', width:4000, zone:720, height:440, stock:1, build:55, repair:24, limit:8 },
   siege: { name:'Siege', width:4800, zone:900, height:560, stock:1.5, build:70, repair:30, limit:8 },
   grand: { name:'Grand Siege · experimental', width:6400, zone:1300, height:720, stock:2, build:90, repair:40, limit:10 },
 };

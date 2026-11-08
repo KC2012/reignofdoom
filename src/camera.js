@@ -5,8 +5,8 @@ export function zoomCamera(camera,factor,anchor,viewport){const before=screenToW
 export function fitFrame(bounds,viewport={width:1440,height:700},padding=60){const aspect=viewport.width/Math.max(1,viewport.height);return{x:(bounds.minX+bounds.maxX)/2,y:(bounds.minY+bounds.maxY)/2,width:Math.max(bounds.maxX-bounds.minX+padding*2,(bounds.maxY-bounds.minY+padding*2)*aspect,600)};}
 function fortFrame(match,side,viewport){
  const w=match.world,s=w.sides[side],g=w.foundation(side),b={minX:s.zone[0],maxX:s.zone[1],minY:g-280,maxY:g+45};
- for(const e of w.entities.values())if(e.side===side&&e.kind!=='projectile'&&Math.abs(e.body.position.x-s.center)<w.layout.scale.zone/2+240){b.minX=Math.min(b.minX,e.body.bounds.min.x);b.maxX=Math.max(b.maxX,e.body.bounds.max.x);b.minY=Math.min(b.minY,e.body.bounds.min.y);b.maxY=Math.max(b.maxY,Math.min(g+80,e.body.bounds.max.y));}
- return fitFrame(b,viewport,35);
+ for(const e of w.entities.values())if(e.side===side&&e.kind!=='projectile'&&Math.abs(e.body.position.x-s.center)<w.layout.scale.zone/2+240){b.minX=Math.min(b.minX,e.body.bounds.min.x);b.maxX=Math.max(b.maxX,e.body.bounds.max.x);b.minY=Math.min(b.minY,e.body.bounds.min.y+(match.phase==='flight'?Math.min(0,e.body.velocity.y)*12:0));b.maxY=Math.max(b.maxY,Math.min(g+80,e.body.bounds.max.y));}
+ return fitFrame(b,viewport,match.phase==='flight'?80:35);
 }
 export function phaseFrame(match,mode='auto',viewport={width:1440,height:700}){
  const w=match.world,s=w.sides[match.active],enemy=w.sides[1-match.active],aspect=viewport.width/Math.max(1,viewport.height);

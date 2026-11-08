@@ -35,3 +35,22 @@ test('Construction assistance holds physics only during manipulation, while the 
 test('A light timber roof is survivable but a sustained heavy steel load still crushes',()=>{
  for(const material of['wood','metal']){const w=empty(),s=w.soldier(0,2000,795);w.block(0,material,2000,768,110,20);w.step(500);assert.equal(w.entities.has(s.body.id),material==='wood');w.dispose();}
 });
+test('A charged pad launches its resting load when a contacting projectile trips it',()=>{
+ const w=empty(),pad=w.block(1,'metal',2000,801,80,18,0,'rect',{reactive:'spring',maxHealth:300});Matter.Body.setStatic(pad.body,true);const load=w.block(1,'wood',2000,773,36,36);w.step(100);assert.equal(pad.spent,undefined);launch(w,'heavy',1920,780);Matter.Body.setVelocity(w.shot.entity.body,{x:16,y:6});let fired=false;for(let n=0;n<60;n++){w.step();if(pad.spent){fired=true;assert.ok(load.body.velocity.y< -2);break;}}assert.ok(fired);w.dispose();
+});
+test('Blasts damage fixed mechanisms without assigning ghost velocity that stalls a turn',()=>{
+ const w=empty(),anchor=w.block(1,'metal',2000,710,24,200,0,'rect',{reactive:'spring',fixed:true,maxHealth:1000});Matter.Body.setStatic(anchor.body,true);launch(w,'bomb',1970,700);w.explode(w.shot.entity);assert.equal(anchor.body.speed,0);assert.ok(anchor.health<anchor.maxHealth);w.step(180);assert.equal(w.shotFinished(),true);w.dispose();
+});
+test('Support failure releases a weight into powder, then a spring launches the physical wreckage',()=>{
+ const w=empty(),{anchor}=w.hangingWeight(1,2000,810),pad=w.block(1,'metal',2000,801,80,18,0,'rect',{reactive:'spring',fixed:true,maxHealth:160,throwDirection:1});Matter.Body.setStatic(pad.body,true);w.block(1,'wood',2000,773,36,36,0,'rect',{reactive:'volatile',maxHealth:32});w.armed=false;w.step(180);w.armed=true;assert.equal(w.reactionHistory.length,0);
+ w.hurt(anchor,100,'projectile-fixture');w.step(600);const types=w.reactionHistory.map(e=>e.type);assert.ok(types.includes('rope-release'));assert.ok(types.includes('explosion'));assert.ok(types.includes('spring-release'));assert.equal(w.reactionHistory.find(e=>e.type==='explosion').trigger.source,'heavy-impact');w.dispose();
+});
+test('Odd rubble counts cannot exceed the physical fragment budget and freed space is reusable',()=>{
+ const w=empty();for(let i=0;i<159;i++)w.block(1,'wood',1200+i*4,700,3,3,0,'rect',{fragment:true});const intact=w.block(1,'wood',2200,700,80,40);w.fracture(intact);assert.equal(w.fragmentCount,159);assert.ok(w.entities.has(intact.body.id));w.remove([...w.entities.values()].find(e=>e.fragment));w.fracture(intact);assert.equal(w.fragmentCount,160);assert.ok(!w.entities.has(intact.body.id));w.dispose();
+});
+test('Vortex produces broad visible lift across separate loose timber pieces',()=>{
+ const w=empty(),blocks=[1930,2000,2070].map(x=>w.block(1,'wood',x,790,50,40));w.step(120);const heights=blocks.map(e=>e.body.position.y);w.effects.fields.push({x:2000,y:780,radius:190,age:0,duration:1700,owner:0});w.step(60);assert.ok(blocks.every((e,i)=>e.body.position.y<heights[i]-30));assert.equal(w.reactionHistory.some(e=>e.type==='explosion'),false);w.dispose();
+});
+test('Every toy-lab rig remains stable until a player acts',async()=>{
+ const {loadRig}=await import('../src/laboratory.js');for(const kind of['tower','bunker','chain']){const m=new Match({mode:'hotseat',scale:'skirmish',seed:1042});loadRig(m,kind);m.world.step(600);assert.deepEqual(m.counts(),[3,3]);assert.ok(m.world.troops.flat().every(t=>t.health===t.maxHealth));assert.equal(m.world.reactionHistory.length,0);m.dispose();}
+});
